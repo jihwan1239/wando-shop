@@ -16,9 +16,10 @@
 <style>
 :root{--bg:#f7ecd6;--panel:#fffaf0;--ink:#3b2a2a;--sub:#8a6f5c;--line:#e3cfae;--blue:#4a88c7;--red:#e2574c;--green:#5a9a5e;--coin:#f0b840}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Galmuri11','Galmuri9',system-ui,sans-serif;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 button{font-family:inherit;color:inherit}
-#app{max-width:480px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+#app{max-width:480px;margin:0 auto;height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
 .hud{display:flex;align-items:center;gap:8px;padding:10px 12px 8px}
 .hud .title{flex:1;min-width:0}
 .hud .name{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -27,14 +28,15 @@ button{font-family:inherit;color:inherit}
 .coin{width:12px;height:12px;background:var(--coin);border:2px solid #b07a20;border-radius:50%}
 .icon-btn{width:36px;height:36px;border:2px solid var(--ink);background:var(--panel);border-radius:8px;font-size:15px;box-shadow:0 2px 0 var(--ink)}
 .icon-btn.off{opacity:.45}
-.stage{position:relative;line-height:0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
-#cv{display:block;width:100%;image-rendering:pixelated;image-rendering:crisp-edges;touch-action:manipulation}
+.hud,.tabs{flex:none}
+.stage{flex:none;position:relative;line-height:0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);background:#d7c3a0;display:flex;justify-content:center}
+#cv{display:block;image-rendering:pixelated;image-rendering:crisp-edges;touch-action:manipulation}
 #toast{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:rgba(59,42,42,.88);color:#fffaf0;font-size:12px;line-height:1.4;padding:7px 12px;border-radius:8px;white-space:nowrap;opacity:0;transition:opacity .25s;pointer-events:none;max-width:92%;overflow:hidden;text-overflow:ellipsis}
 #toast.on{opacity:1}
 .tabs{display:flex;gap:6px;padding:10px 12px 0}
 .tabs button{flex:1;padding:9px 0;border:2px solid var(--ink);border-bottom:none;background:#ead9b8;border-radius:8px 8px 0 0;font-size:13px}
 .tabs button.on{background:var(--panel);font-weight:700}
-#panel{background:var(--panel);border:2px solid var(--ink);margin:0 12px 16px;border-radius:0 0 10px 10px;padding:12px;flex:1}
+#panel{background:var(--panel);border:2px solid var(--ink);margin:0 12px 10px;border-radius:0 0 10px 10px;padding:12px;flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .hint{font-size:12px;color:var(--sub);line-height:1.6;margin-bottom:10px}
 .row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line)}
 .row:last-child{border-bottom:none}
@@ -381,15 +383,19 @@ function unlockAudio(){
 ['pointerup','touchend','click','keydown'].forEach(ev=>document.addEventListener(ev,unlockAudio,true));
 
 /* ---------------- 캔버스 ---------------- */
-const W=180,H=210;
+const W=180,H=188;
 const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
 let SC=1;
+// 한 화면에 다 들어오게: 위 상단바와 아래 탭, 최소 목록 높이를 빼고 남은 공간에 가게 화면을 맞춰요
 function resize(){
-  const cssW=cv.parentElement.clientWidth,dpr=window.devicePixelRatio||1;
+  const app=document.getElementById('app'),dpr=window.devicePixelRatio||1;
+  const used=document.querySelector('.hud').offsetHeight+document.querySelector('.tabs').offsetHeight+4+10;
+  const minPanel=Math.max(170,app.clientHeight*.28);
+  const cssW=Math.floor(Math.min(app.clientWidth,(app.clientHeight-used-minPanel)*W/H));
   SC=Math.max(1,Math.ceil(cssW*dpr/W));
-  cv.width=W*SC;cv.height=H*SC;cv.style.height=(cssW*H/W)+'px';
+  cv.width=W*SC;cv.height=H*SC;cv.style.width=cssW+'px';cv.style.height=Math.round(cssW*H/W)+'px';
 }
-window.addEventListener('resize',resize);resize();
+window.addEventListener('resize',resize);window.addEventListener('orientationchange',()=>setTimeout(resize,200));resize();
 const R=(x,y,w,h,c)=>{ctx.fillStyle=c;ctx.fillRect(x,y,w,h)};
 const spr=(n,x,y,over,flip)=>ctx.drawImage(sprite(n,over,flip),Math.round(x),Math.round(y));
 function T(s,x,y,size,color,align='center',outline){
@@ -557,7 +563,7 @@ function draw(){
   // 땅
   R(0,56,W,80,'#ead9b6');
   R(0,136,W,40,'#d7c3a0');for(let x=0;x<W;x+=12)R(x,136,1,40,'#cbb48e');R(0,146,W,1,'#cbb48e');R(0,158,W,1,'#cbb48e');R(0,136,W,1,'#b99d76');
-  R(0,176,W,34,'#9a958c');R(0,176,W,2,'#7f7a72');for(let x=4;x<W;x+=20)R(x,192,10,2,'#f3e9c8');
+  R(0,176,W,H-176,'#9a958c');R(0,176,W,2,'#7f7a72');for(let x=4;x<W;x+=20)R(x,182,10,2,'#f3e9c8');
 
   // 간판
   R(8,15,114,21,'#7a5236');R(10,17,110,17,'#f6e7c8');
@@ -843,7 +849,7 @@ queueStory('prologue');
 if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }
-(document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{renderPanel(true);requestAnimationFrame(loop)});
+(document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{resize();renderPanel(true);requestAnimationFrame(loop)});
 </script>
 </body>
 </html>
