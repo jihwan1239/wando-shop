@@ -1,5 +1,5 @@
 // 게임을 수정해서 다시 올릴 때마다 이 숫자를 하나씩 올려주세요 (v1 → v2)
-const VERSION = 'wando-shop-v8';
+const VERSION = 'wando-shop-v10';
 const CORE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
