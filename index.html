@@ -54,7 +54,8 @@ button{font-family:inherit;color:inherit}
 .shopcard{text-align:center;padding:6px 4px}
 .shopcard .sign{display:inline-block;background:#f6e7c8;border:3px solid #7a5236;padding:8px 16px;font-size:17px;font-weight:700;border-radius:4px;margin-bottom:10px}
 .shopcard p{font-size:13px;line-height:1.7;margin:6px 0;color:var(--ink)}
-.shopcard .meta{font-size:12px;color:var(--sub)}
+.shopcard .meta{font-size:12px;color:var(--sub);margin-top:4px}
+.shopcard .meta a{color:var(--blue)}
 .stats{display:flex;gap:8px;margin-top:14px}
 .stats div{flex:1;background:#f3e6cc;border-radius:8px;padding:10px 6px;text-align:center;font-size:11px;color:var(--sub)}
 .stats b{display:block;font-size:15px;color:var(--ink);margin-top:4px}
@@ -109,10 +110,10 @@ button{font-family:inherit;color:inherit}
 const CONFIG = {
   shopName: '청해진 건어물',         // 게임 속 가게 이름 (간판)
   realShopName: '완도어람건어물',    // 실제 가게 이름 (우리 가게 탭, 엔딩에 표시)
-  shopIntro: '게임 속 청해진 건어물은 완도에 실제로 있는 건어물 가게를 모티브로 만들었어요. 완도 바다에서 난 멸치, 미역, 다시마, 김, 전복을 바닷바람에 말려 팝니다.',
-  shopUrl: '',                       // 스마트스토어, 인스타 등 실제 가게 링크
-  shopAddress: '',                   // 예: 부산 자갈치시장 OO호
-  shopPhone: '',                     // 예: 051-000-0000
+  shopIntro: '게임 속 청해진 건어물은 실제 건어물 가게 완도어람건어물을 모티브로 만들었어요. 게임에서 말리던 건어물, 성남 가게에 오시면 진짜로 만나볼 수 있어요.',
+  shopUrl: 'https://naver.me/GSgVA9Op', // 실제 가게 링크 (네이버)
+  shopAddress: '경기 성남시 수정구 수정북로 28 1층',
+  shopPhone: '010-9437-4367',
   supportAccount: '',                // 비워두면 응원 버튼이 안 보여요
 };
 
@@ -209,7 +210,7 @@ const STORY={
     ['halmae','할미가 평생 지킨 가게를 니가 이렇게 키울 줄은 몰랐다.'],
     ['halmae','고맙다, 아가. 이제 진짜 완도 사람 다 됐네.'],
     ['narr','오늘도 청해진 건어물에는 바닷바람이 분다.'],
-    ['help','이 게임은 완도에 실제로 있는 건어물 가게를 모티브로 만들었어요. 우리 가게 탭에서 진짜 가게를 구경할 수 있어요.']]},
+    ['help','이 게임은 성남에 있는 실제 건어물 가게, 완도어람건어물을 모티브로 만들었어요. 우리 가게 탭에서 진짜 가게를 구경할 수 있어요.']]},
 };
 const STORY_ORDER=['prologue','gull1','cat1','miyeok','dasima','staff','gim','squid','abalone','rank1','rank2','rank3','ending'];
 
@@ -659,7 +660,7 @@ function renderPanel(force){
       ${CONFIG.realShopName?`<div class="meta">실제 가게: <b>${CONFIG.realShopName}</b></div>`:''}
       <p>${CONFIG.shopIntro}</p>
       ${CONFIG.shopAddress?`<div class="meta">${CONFIG.shopAddress}</div>`:''}
-      ${CONFIG.shopPhone?`<div class="meta">${CONFIG.shopPhone}</div>`:''}
+      ${CONFIG.shopPhone?`<div class="meta"><a href="tel:${CONFIG.shopPhone.replace(/-/g,'')}">${CONFIG.shopPhone}</a></div>`:''}
       <button class="btn red big" data-act="visit">진짜 가게 구경하러 가기</button>
       ${CONFIG.supportAccount?`<button class="btn ghost big" data-act="support">사장님께 응원 보내기</button>`:''}
       <div class="stats"><div>누적 매출<b>${fmt(S.totalEarned)}원</b></div><div>모신 손님<b>${fmt(S.served)}명</b></div><div>지킨 건어물<b>${fmt(S.shooed)}번</b></div></div>
