@@ -23,7 +23,28 @@ button{font-family:inherit;color:inherit}
 .hud{display:flex;align-items:center;gap:8px;padding:10px 12px 8px}
 .hud .title{flex:1;min-width:0}
 .hud .name{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hud .rank{font-size:11px;color:var(--sub);margin-top:3px}
+.hud .rank{font-size:11px;color:var(--sub);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hud .rank b{color:var(--red)}
+.xp{height:6px;background:#ead9b8;border:1.5px solid var(--ink);border-radius:4px;margin-top:4px;overflow:hidden;max-width:180px}
+.xp i{display:block;height:100%;width:0;background:linear-gradient(90deg,#f0b840,#f6d36b);transition:width .3s}
+.tabs button{position:relative}
+.tabs .dot{display:none;position:absolute;top:5px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--red);border:1.5px solid var(--ink)}
+.tabs .dot.on{display:block}
+.stamps{display:flex;gap:3px;margin-top:5px}
+.stamp{font-size:10px;width:18px;height:18px;line-height:15px;text-align:center;border-radius:50%;border:1.5px dashed #cdbb9a;color:#cdbb9a}
+.stamp.got{border-style:solid;color:#fff;border-color:var(--ink)}
+.order{background:#f3e6cc;border:2px solid var(--ink);border-radius:10px;padding:12px}
+.order .top{display:flex;gap:10px;align-items:flex-start}
+.order .top img.pt{width:44px;height:70px;image-rendering:pixelated;background:#fffaf0;border:2px solid var(--ink);border-radius:8px;padding:5px 4px;flex:none}
+.order .who{font-size:12px;font-weight:700;color:var(--sub)}
+.order .talk{font-size:14px;line-height:1.6;margin-top:4px}
+.order .need{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:13px}
+.order .need img{width:28px;height:28px;image-rendering:pixelated}
+.order .need .bar{flex:1;margin:0}
+.order .reward{font-size:12px;color:var(--sub);margin-top:6px}
+.sec{font-size:12px;font-weight:700;color:var(--sub);margin:14px 0 2px}
+.sec:first-child{margin-top:0}
+.empty{text-align:center;color:var(--sub);font-size:13px;line-height:1.7;padding:22px 6px}
 .coins{display:flex;align-items:center;gap:6px;background:var(--panel);border:2px solid var(--ink);border-radius:8px;padding:6px 10px;font-size:14px;box-shadow:0 2px 0 var(--ink)}
 .coin{width:12px;height:12px;background:var(--coin);border:2px solid #b07a20;border-radius:50%}
 .icon-btn{width:36px;height:36px;border:2px solid var(--ink);background:var(--panel);border-radius:8px;font-size:15px;box-shadow:0 2px 0 var(--ink)}
@@ -31,10 +52,10 @@ button{font-family:inherit;color:inherit}
 .hud,.tabs{flex:none}
 .stage{flex:none;position:relative;line-height:0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);background:#d7c3a0;display:flex;justify-content:center}
 #cv{display:block;image-rendering:pixelated;image-rendering:crisp-edges;touch-action:manipulation}
-#toast{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:rgba(59,42,42,.88);color:#fffaf0;font-size:12px;line-height:1.4;padding:7px 12px;border-radius:8px;white-space:nowrap;opacity:0;transition:opacity .25s;pointer-events:none;max-width:92%;overflow:hidden;text-overflow:ellipsis}
+#toast{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);background:rgba(59,42,42,.88);color:#fffaf0;font-size:12px;line-height:1.4;padding:7px 12px;border-radius:8px;white-space:nowrap;opacity:0;transition:opacity .25s;pointer-events:none;max-width:92%;overflow:hidden;text-overflow:ellipsis}
 #toast.on{opacity:1}
 .tabs{display:flex;gap:6px;padding:10px 12px 0}
-.tabs button{flex:1;padding:9px 0;border:2px solid var(--ink);border-bottom:none;background:#ead9b8;border-radius:8px 8px 0 0;font-size:13px}
+.tabs button{flex:1;padding:9px 0;white-space:nowrap;border:2px solid var(--ink);border-bottom:none;background:#ead9b8;border-radius:8px 8px 0 0;font-size:13px}
 .tabs button.on{background:var(--panel);font-weight:700}
 #panel{background:var(--panel);border:2px solid var(--ink);margin:0 12px 10px;border-radius:0 0 10px 10px;padding:12px;flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .hint{font-size:12px;color:var(--sub);line-height:1.6;margin-bottom:10px}
@@ -55,7 +76,13 @@ button{font-family:inherit;color:inherit}
 .lv{font-size:11px;color:var(--sub);margin-left:4px}
 .shopcard{text-align:center;padding:6px 4px}
 .shopcard .sign{display:inline-block;background:#f6e7c8;border:3px solid #7a5236;padding:8px 16px;font-size:17px;font-weight:700;border-radius:4px;margin-bottom:10px}
-.shopcard p{font-size:13px;line-height:1.7;margin:6px 0;color:var(--ink)}
+.shopcard p{font-size:12px;line-height:1.7;margin:12px 2px 0;color:var(--sub)}
+.real{background:#f3e6cc;border:2px solid var(--ink);border-radius:10px;padding:12px 12px 2px}
+.real .rl{font-size:11px;color:var(--sub)}
+.real .rn{font-size:18px;font-weight:700;margin:5px 0 6px}
+.real .ri{font-size:12px;color:var(--sub);margin-top:3px}
+.real .ri a{color:var(--blue)}
+.real .btn.big{margin:10px 0}
 .shopcard .meta{font-size:12px;color:var(--sub);margin-top:4px}
 .shopcard .meta a{color:var(--blue)}
 .stats{display:flex;gap:8px;margin-top:14px}
@@ -91,14 +118,17 @@ button{font-family:inherit;color:inherit}
 <body>
 <div id="app">
   <header class="hud">
-    <div class="title"><div class="name" id="hudName"></div><div class="rank" id="hudRank"></div></div>
+    <div class="title"><div class="name" id="hudName"></div>
+      <div class="rank"><b id="hudLv">Lv 1</b> <span id="hudRank"></span></div>
+      <div class="xp"><i id="xpFill"></i></div></div>
     <div class="coins"><span class="coin"></span><b id="hudCoins">0</b>원</div>
     <button id="btnSound" class="icon-btn" aria-label="소리">♪</button>
   </header>
   <div class="stage"><canvas id="cv"></canvas><div id="toast"></div></div>
   <nav class="tabs">
     <button data-tab="stock" class="on">창고</button>
-    <button data-tab="up">가게 키우기</button>
+    <button data-tab="order">주문<i class="dot"></i></button>
+    <button data-tab="up">키우기</button>
     <button data-tab="shop">우리 가게</button>
   </nav>
   <section id="panel"></section>
@@ -121,25 +151,38 @@ const CONFIG = {
 
 /* ---------------- 데이터 ---------------- */
 const PRODUCTS = [
-  {id:'anchovy', name:'멸치',   price:8,   cost:15,  time:10, batch:5, unlock:0,     note:'완도 앞바다 멸치, 볶음도 국물도'},
-  {id:'miyeok',  name:'미역',   price:20,  cost:40,  time:18, batch:5, unlock:150,   note:'해녀 이모가 물질해서 딴 미역'},
-  {id:'dasima',  name:'다시마', price:35,  cost:70,  time:25, batch:5, unlock:600,   note:'국물 맛의 비밀, 하얀 가루는 맛이에요'},
-  {id:'gim',     name:'김',     price:60,  cost:120, time:35, batch:5, unlock:2000,  note:'겨울 바다 김발에서 온 김'},
-  {id:'squid',   name:'오징어', price:110, cost:220, time:50, batch:5, unlock:6000,  note:'선장님 배에서 바로 받은 오징어'},
-  {id:'abalone', name:'건전복', price:180, cost:350, time:70, batch:5, unlock:15000, note:'완도의 자랑, 선물용으로 인기'},
+  {id:'anchovy', name:'멸치',   price:10,  cost:15,  time:8,  batch:5, unlock:0,    note:'완도 앞바다 멸치, 볶음도 국물도'},
+  {id:'miyeok',  name:'미역',   price:24,  cost:40,  time:13, batch:5, unlock:100,  note:'해녀 이모가 물질해서 딴 미역'},
+  {id:'dasima',  name:'다시마', price:40,  cost:70,  time:18, batch:5, unlock:400,  note:'국물 맛의 비밀, 하얀 가루는 맛이에요'},
+  {id:'gim',     name:'김',     price:70,  cost:120, time:24, batch:5, unlock:1200, note:'겨울 바다 김발에서 온 김'},
+  {id:'squid',   name:'오징어', price:120, cost:220, time:32, batch:5, unlock:3500, note:'선장님 배에서 바로 받은 오징어'},
+  {id:'abalone', name:'건전복', price:200, cost:350, time:45, batch:5, unlock:9000, note:'완도의 자랑, 선물용으로 인기'},
 ];
 const PM = Object.fromEntries(PRODUCTS.map(p=>[p.id,p]));
 
 const UPS = [
-  {id:'rack',  name:'건조대 늘리기',    max:4, cost:l=>[120,450,1500,5000][l], desc:()=>`말릴 칸이 하나 늘어요 (${slotCount()}칸)`},
-  {id:'fan',   name:'선풍기 놓기',      max:5, cost:l=>Math.round(90*Math.pow(2.3,l)),  desc:()=>'건어물이 10% 더 빨리 말라요'},
-  {id:'pack',  name:'예쁜 포장',        max:8, cost:l=>Math.round(160*Math.pow(2.2,l)), desc:()=>'판매가가 15% 올라요'},
-  {id:'sign',  name:'간판 꾸미기',      max:6, cost:l=>Math.round(130*Math.pow(2.1,l)), desc:()=>'손님이 더 자주 와요'},
-  {id:'staff', name:'알바생 고용',      max:1, cost:()=>900,  desc:()=>'손님을 알아서 응대해요. 자리 비워도 팔아요'},
-  {id:'auto',  name:'자동 건조 시스템', max:1, cost:()=>3000, desc:()=>'다 마르면 알아서 거두고 다시 걸어요'},
+  {id:'rack',  name:'건조대 늘리기',    max:4, cost:l=>[80,300,900,2800][l], desc:()=>`말릴 칸이 하나 늘어요 (${slotCount()}칸)`},
+  {id:'fan',   name:'선풍기 놓기',      max:5, cost:l=>Math.round(60*Math.pow(2.2,l)),  desc:()=>'건어물이 10% 더 빨리 말라요'},
+  {id:'pack',  name:'예쁜 포장',        max:8, cost:l=>Math.round(110*Math.pow(2.1,l)), desc:()=>'판매가가 15% 올라요'},
+  {id:'sign',  name:'간판 꾸미기',      max:6, cost:l=>Math.round(90*Math.pow(2,l)),    desc:()=>'손님이 더 자주 와요'},
+  {id:'staff', name:'알바생 고용',      max:1, cost:()=>600,  desc:()=>'손님을 알아서 응대해요. 자리 비워도 팔아요'},
+  {id:'auto',  name:'자동 건조 시스템', max:1, cost:()=>2000, desc:()=>'다 마르면 알아서 거두고 다시 걸어요'},
 ];
-
-const RANKS = [[0,'항구 앞 작은 가게'],[3000,'완도항 단골집'],[20000,'섬마을 명물'],[80000,'남도 건어물 맛집'],[300000,'전국구 완도 건어물']];
+// 가게 꾸미기: 한 번 사면 화면에 보이고, 작은 효과가 붙어요
+const DECOS = [
+  {id:'pot',     name:'화분',        cost:250,  desc:'손님이 조금 더 오래 기다려줘요'},
+  {id:'cushion', name:'치즈 방석',   cost:350,  desc:'치즈가 자주 놀러와서 낮잠을 자요'},
+  {id:'chime',   name:'풍경',        cost:500,  desc:'직접 응대 보너스가 10%에서 20%로'},
+  {id:'lights',  name:'줄전구',      cost:800,  desc:'밤에 손님이 더 자주 와요'},
+  {id:'flag',    name:'풍어기',      cost:1200, desc:'갈매기가 덜 와요'},
+  {id:'signgold',name:'간판 새단장', cost:2500, desc:'모든 판매가 5% 올라요'},
+];
+// 레벨: 번 돈만큼 경험치가 쌓여요
+const LV_MAX=30;
+const needXP=L=>Math.round(60*Math.pow(L,2.5)); // 초반엔 금방, 뒤로 갈수록 천천히
+const RANKS = [[1,'항구 앞 작은 가게'],[4,'완도항 단골집'],[8,'섬마을 명물'],[13,'남도 건어물 맛집'],[20,'전국구 완도 건어물']];
+// 도감 도장: 많이 팔수록 그 상품 판매가가 올라요
+const STAMPS=[[20,'동','#c98a4f'],[100,'은','#9aa7b0'],[300,'금','#e0b23a']];
 const KEEPER_LINES = ['어서오세요~','완도 바람이 다 말려줬어요','다시마는 국물용으로 최고예요','건전복은 선물용으로 인기예요','청산도 가시는 길이세요?','천천히 구경하세요~'];
 const WET={t:'#e7b98a',s:'#a9c1d1',v:'#7d9db8',g:'#335a45',G:'#5a8060',a:'#6f7046',b:'#d99a69',y:'#e4c486',p:'#f7a98a',j:'#c9a888'};
 
@@ -150,6 +193,7 @@ const CAST={
   haenyeo:{name:'해녀 이모',   pal:{c:'#2f3e55',h:'#2a2222',f:'#f0c49c'}},
   captain:{name:'박 선장님',   pal:{c:'#3f6fa8',h:'#2a2222',f:'#e8b48a'}},
   dongsu: {name:'알바생 동수', pal:{c:'#9ccf8a',h:'#3a2a20'}},
+  seoul:  {name:'서울 택배 손님', pal:{c:'#f4a6c6',h:'#8a5a3a'}},
   narr:   {name:''},
   help:   {name:'도움말'},
 };
@@ -214,6 +258,14 @@ const STORY={
     ['narr','오늘도 청해진 건어물에는 바닷바람이 분다.'],
     ['help','이 게임은 성남에 있는 실제 건어물 가게, 완도어람건어물을 모티브로 만들었어요. 우리 가게 탭에서 진짜 가게를 구경할 수 있어요.']]},
 };
+// 단골 주문 대사 ({n}=상품명, {q}=개수)
+const ORDER_TALK={
+  halmae: ['아가, 경로당 할매들이 {n} 좀 구해달라더라. {q}개만 챙겨줄래?','제사 지낼 때 쓸 {n} {q}개만 따로 빼놔라잉.'],
+  haenyeo:['물질 끝나고 동네 사람들 나눠줄 {n} {q}개 있냐?','우리 집 김장할 때 쓸 {n}, {q}개만 부탁혀~'],
+  captain:['배 타는 선원들 먹일 {n} {q}개 넉넉히 준비해놔라잉!','이번 출항 때 {n} {q}개 실어갈란다.'],
+  dongsu: ['사장님, 학교 선생님이 {n} {q}개 사고 싶대요!','엄마가 {n} {q}개 사오래요. 제가 계산할게요!'],
+  seoul:  ['안녕하세요, 서울이에요! {n} {q}개 택배로 보내주실 수 있나요?','지난번 {n} 너무 맛있었어요. 이번엔 {q}개 주문할게요!'],
+};
 const STORY_ORDER=['prologue','gull1','cat1','miyeok','dasima','staff','gim','squid','abalone','rank1','rank2','rank3','ending'];
 
 /* ---------------- 픽셀 스프라이트 ---------------- */
@@ -234,6 +286,7 @@ const SPR={
   catA:[".k...k......",".kk.kk......","kmmmmmk.....","kmemmek...k.","kmmrmmkkkkmk",".kmmmmmMmmk.",".kmMmmmmMmk.",".kk.kk.kk.k."],
   catB:[".k...k......",".kk.kk......","kmmmmmk.....","kmemmek...k.","kmmrmmkkkkmk",".kmmmmmMmmk.",".kmMmmmmMmk.","..kk.kk.kk.."],
   heart:[".kk.kk.","kRRkRRk","kRRRRRk",".kRRRk.","..kRk..","...k..."],
+  catSleep:[".k...k......",".kk.kk......","kmmmmmkkkkk.","kkmmkkmMmmmk","kmmrmmmmmMmk",".kkkkkkkkkk."],
 };
 const _cache={};
 function sprite(name,over,flip){
@@ -260,7 +313,7 @@ const ICONS={};PRODUCTS.forEach(p=>ICONS[p.id]=iconURL(p.id));
 /* ---------------- 저장 ---------------- */
 const KEY='wando-shop-v1';
 function fresh(){
-  return {coins:60,totalEarned:0,served:0,shooed:0,story:{},
+  return {coins:60,totalEarned:0,served:0,shooed:0,story:{},level:1,xp:0,sold:{},deco:{},order:null,ordersDone:0,pets:0,
     stock:Object.fromEntries(PRODUCTS.map(p=>[p.id,0])),
     unlocked:{anchovy:true},
     slots:Array.from({length:6},()=>({p:null,t:0,done:false})),
@@ -271,19 +324,30 @@ let S=fresh();
 try{
   const raw=localStorage.getItem(KEY);
   if(raw){const d=JSON.parse(raw);const f=fresh();
-    S={...f,...d,story:{...(d.story||{})},stock:{...f.stock,...d.stock},up:{...f.up,...d.up},unlocked:{...f.unlocked,...d.unlocked},slots:(d.slots&&d.slots.length===6)?d.slots:f.slots};}
+    S={...f,...d,story:{...(d.story||{})},stock:{...f.stock,...d.stock},up:{...f.up,...d.up},unlocked:{...f.unlocked,...d.unlocked},
+      sold:{...(d.sold||{})},deco:{...(d.deco||{})},slots:(d.slots&&d.slots.length===6)?d.slots:f.slots};
+    // 레벨이 없던 예전 저장은 지금까지 번 돈으로 레벨을 계산해서 이어가요
+    if(d.level===undefined){let xp=S.totalEarned,L=1;while(L<LV_MAX&&xp>=needXP(L)){xp-=needXP(L);L++}S.level=L;S.xp=xp}}
 }catch(e){}
 function save(){S.lastSave=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
 /* ---------------- 계산 ---------------- */
 const slotCount=()=>2+S.up.rack;
 const timeEff=p=>p.time*(1-0.1*S.up.fan);
-const priceEff=p=>Math.round(p.price*(1+0.15*S.up.pack));
-const spawnInt=()=>7*Math.pow(0.88,S.up.sign);
+const stampLv=id=>STAMPS.filter(s=>(S.sold[id]||0)>=s[0]).length;
+const priceEff=p=>Math.round(p.price*(1+0.15*S.up.pack+0.05*stampLv(p.id)+(S.deco.signgold?.05:0)));
+let fest=null;
+const spawnInt=()=>{
+  let t=5.5*Math.pow(0.88,S.up.sign);
+  if(fest)t*=.4;
+  if(S.deco.lights&&nightAmt((S.clock%DAY)/DAY)>.5)t*=.75;
+  return t;
+};
+const tapBonus=()=>S.deco.chime?1.2:1.1;
 const fmt=n=>Math.floor(n).toLocaleString('ko-KR');
 const rand=(a,b)=>a+Math.random()*(b-a);
 const pick=a=>a[Math.floor(Math.random()*a.length)];
-function rankName(){let r=RANKS[0][1];for(const [v,n] of RANKS)if(S.totalEarned>=v)r=n;return r;}
+function rankName(L=S.level){let r=RANKS[0][1];for(const [v,n] of RANKS)if(L>=v)r=n;return r;}
 
 /* ---------------- 사운드 ---------------- */
 let AC=null;
@@ -383,7 +447,7 @@ function unlockAudio(){
 ['pointerup','touchend','click','keydown'].forEach(ev=>document.addEventListener(ev,unlockAudio,true));
 
 /* ---------------- 캔버스 ---------------- */
-const W=180,H=188;
+const W=180,H=172;
 const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
 let SC=1;
 // 한 화면에 다 들어오게: 위 상단바와 아래 탭, 최소 목록 높이를 빼고 남은 공간에 가게 화면을 맞춰요
@@ -408,7 +472,7 @@ function mix(a,b,k){const A=hex(a),B=hex(b);return`rgb(${A.map((v,i)=>Math.round
 
 /* ---------------- 장면 배치 ---------------- */
 const SHELF=[[22,60],[44,60],[66,60],[22,84],[44,84],[66,84]];
-const QX=[26,46,66,86];
+const QX=[22,44,66,88];
 const LINES=[46,86],SX=[131,145,159];
 const slotPos=i=>({x:SX[i%3],line:LINES[Math.floor(i/3)]});
 const KEEPER={x:96,y:92};
@@ -416,8 +480,8 @@ const DAY=300;
 const STARS=Array.from({length:22},(_,i)=>[(i*53+17)%W,(i*29+5)%38]);
 const clouds=[{x:20,y:8,w:22},{x:110,y:16,w:16},{x:160,y:6,w:12}];
 
-let customers=[],parts=[],gull=null,cat=null,say=null;
-let spawnT=2,gullT=rand(40,70),catT=rand(60,100),saveT=0;
+let customers=[],parts=[],coins=[],walkers=[],gull=null,cat=null,nap=null,say=null,keeperWave=0;
+let spawnT=2,gullT=rand(40,70),catT=rand(60,100),saveT=0,walkT=3,napT=rand(25,45),festT=rand(150,240),orderT=12;
 
 function nightAmt(c){if(c<.64)return 0;if(c<.74)return(c-.64)/.1;if(c<.92)return 1;return 1-(c-.92)/.08}
 const SKY=[[0,'#8fd3f2','#dff3f8'],[.55,'#8fd3f2','#dff3f8'],[.66,'#f3a46f','#ffe0a8'],[.74,'#3a3f72','#7a6f9a'],[.92,'#262c55','#4b4f80'],[1,'#8fd3f2','#dff3f8']];
@@ -439,19 +503,68 @@ function spawnCustomer(){
   if(!free.length)return;
   const q=pick(free),fromLeft=Math.random()<.5;
   customers.push({q,x:fromLeft?-8:W+8,y:156,tx:QX[q],state:'in',phase:'walk',want:chooseWant(),qty:1+Math.floor(Math.random()*3),
-    pat:0,maxPat:18,serveT:0,mood:null,moodT:0,exit:0,bob:Math.random()*6,
+    pat:0,maxPat:18+(S.deco.pot?5:0)+(fest?4:0),serveT:0,mood:null,moodT:0,exit:0,bob:Math.random()*6,
     pal:{c:pick(SHIRTS),h:pick(HAIRS),d:pick(PANTS)}});
 }
 function leave(c,mood){c.state='out';c.phase='down';c.mood=mood;c.moodT=2.2;c.exit=c.x<W/2?-12:W+12}
-function earn(n,x,y){S.coins+=n;S.totalEarned+=n;parts.push({x,y,text:'+'+fmt(n)+'원',color:'#ffd35a',t:0,life:1.3})}
+function coinBurst(x,y,n=6){for(let i=0;i<n;i++)coins.push({x,y,vx:rand(-22,22),vy:rand(-48,-28),t:0,life:rand(.7,1)})}
+function earn(n,x,y,burst=0){
+  S.coins+=n;S.totalEarned+=n;parts.push({x,y,text:'+'+fmt(n)+'원',color:'#ffd35a',t:0,life:1.3});
+  if(burst)coinBurst(x,y+4,burst);
+  addXP(n);
+}
+let celebrate=null,confetti=[];
+function addXP(n){
+  if(S.level>=LV_MAX)return;
+  S.xp+=n;
+  while(S.level<LV_MAX&&S.xp>=needXP(S.level)){
+    S.xp-=needXP(S.level);
+    const oldRank=rankName(S.level);
+    S.level++;
+    const bonus=25*S.level;S.coins+=bonus;
+    const newRank=rankName(S.level);
+    celebrate={t:0,lv:S.level,bonus,rank:newRank!==oldRank?newRank:null};
+    for(let i=0;i<40;i++)confetti.push({x:rand(0,W),y:rand(-30,0),vy:rand(20,40),vx:rand(-6,6),c:pick(['#e2574c','#4a88c7','#f0b840','#5a9a5e','#f4a6c6','#fffaf0']),t:0});
+    fanfare();
+  }
+}
+function fanfare(){[784,988,1175,1568].forEach((f,i)=>setTimeout(()=>blip(f,.12,'square',.035),i*90))}
 function serve(c,byTap){
   const p=PM[c.want],have=S.stock[c.want];
   if(have<=0){if(byTap){toast(`${p.name} 재고가 없어요. 건조대에 걸어주세요!`);blip(220,.12,'triangle')}return false}
   const n=Math.min(have,c.qty);S.stock[c.want]-=n;
-  let gain=n*priceEff(p);if(byTap)gain=Math.ceil(gain*1.1);
-  earn(gain,c.x,c.y-22);S.served++;leave(c,'happy');
-  say={text:'감사합니다~',t:1.4};sfxCoin();return true;
+  addSold(p.id,n);
+  let gain=n*priceEff(p);if(fest)gain=Math.ceil(gain*1.2);if(byTap)gain=Math.ceil(gain*tapBonus());
+  earn(gain,c.x,c.y-22,byTap?7:4);S.served++;leave(c,'happy');
+  say={text:pick(['감사합니다~','또 오세요~','맛있게 드세요!']),t:1.4};sfxCoin();return true;
 }
+function addSold(id,n){
+  const before=stampLv(id);S.sold[id]=(S.sold[id]||0)+n;const after=stampLv(id);
+  if(after>before){const s=STAMPS[after-1];toast(`${PM[id].name} 도감에 ${s[1]}도장을 받았어요! 판매가 +5%`);fanfare()}
+}
+
+/* ---------------- 단골 주문 ---------------- */
+function newOrder(){
+  const un=PRODUCTS.filter(p=>S.unlocked[p.id]);
+  const p=un.length>1&&Math.random()<.6?un[un.length-1-Math.floor(Math.random()*Math.min(2,un.length))]:pick(un);
+  const idx=PRODUCTS.indexOf(p);
+  const qty=Math.max(4,Math.round(rand(6,11)+S.level*.6-idx*1.2));
+  const whoPool=['halmae','haenyeo','dongsu'];if(S.story.squid||S.level>=6)whoPool.push('captain');if(S.level>=8)whoPool.push('seoul');
+  const who=pick(whoPool);
+  const reward=Math.round(qty*priceEff(p)*1.8+20*S.level);
+  S.order={who,pid:p.id,qty,reward,talk:pick(ORDER_TALK[who]).replace('{n}',p.name).replace('{q}',qty)};
+  toast(`${CAST[who].name}의 주문이 들어왔어요!`);blip(1046,.08,'triangle');save();
+}
+function deliverOrder(){
+  const o=S.order;if(!o||S.stock[o.pid]<o.qty)return;
+  S.stock[o.pid]-=o.qty;addSold(o.pid,o.qty);S.ordersDone++;
+  earn(o.reward,KEEPER.x,KEEPER.y-6,12);sfxCoin();
+  say={text:'주문 완료!',t:1.8};keeperWave=1.2;
+  toast(`${CAST[o.who].name}께 ${PM[o.pid].name} ${o.qty}개를 보냈어요. +${fmt(o.reward)}원`);
+  S.order=null;orderT=rand(20,40);save();
+}
+function skipOrder(){S.order=null;orderT=rand(15,25);toast('다음 주문을 기다려요');save()}
+const orderReady=()=>S.order&&S.stock[S.order.pid]>=S.order.qty;
 
 /* ---------------- 건조대 ---------------- */
 function hang(i,pid){
@@ -481,7 +594,7 @@ function update(dt){
     c.bob+=dt*8;
     if(c.state==='in'){
       if(c.phase==='walk'){const d=c.tx-c.x;c.x+=Math.sign(d)*Math.min(Math.abs(d),30*dt);if(Math.abs(d)<.5){c.x=c.tx;c.phase='up'}}
-      else{c.y-=20*dt;if(c.y<=141){c.y=141;c.state='wait'}}
+      else{c.y-=20*dt;if(c.y<=141){c.y=141;c.state='wait';keeperWave=1}}
     }else if(c.state==='wait'){
       c.pat+=dt;
       if(S.up.staff){c.serveT+=dt;if(c.serveT>2.2&&S.stock[c.want]>0)serve(c,false)}
@@ -497,7 +610,7 @@ function update(dt){
   // 갈매기
   gullT-=dt;
   if(gullT<=0&&!gull){
-    gullT=rand(45,85);
+    gullT=rand(45,85)*(S.deco.flag?1.8:1);
     const occ=[...Array(slotCount()).keys()].filter(i=>S.slots[i].p);
     if(occ.length){const top=occ.filter(i=>i<3);const i=pick(top.length?top:occ);const p=slotPos(i);
       gull={x:W+12,y:4,tx:p.x-1,ty:p.line-6,slot:i,state:'in',t:0,carry:null};queueStory('gull1')}
@@ -516,7 +629,7 @@ function update(dt){
 
   // 고양이
   catT-=dt;
-  if(catT<=0&&!cat){
+  if(catT<=0&&!cat&&!nap){
     catT=rand(60,110);
     const any=PRODUCTS.some(p=>S.stock[p.id]>0)||[3,4,5].some(i=>i<slotCount()&&S.slots[i].p);
     if(any){cat={x:-14,y:162,state:'in',t:0,carry:null};queueStory('cat1')}
@@ -534,8 +647,33 @@ function update(dt){
     }else{cat.x-=45*dt;if(cat.x<-16)cat=null}
   }
 
+  // 지나가는 행인 (장날엔 더 많이)
+  walkT-=dt;
+  if(walkT<=0){walkT=fest?rand(1.5,3):rand(6,13);const r=Math.random()<.5;
+    walkers.push({x:r?-8:W+8,dir:r?1:-1,y:rand(166,170),sp:rand(14,22),bob:0,pal:{c:pick(SHIRTS),h:pick(HAIRS),d:pick(PANTS)}})}
+  for(const w of walkers){w.x+=w.dir*w.sp*dt;w.bob+=dt*8}
+  walkers=walkers.filter(w=>w.x>-12&&w.x<W+12);
+
+  // 치즈 낮잠 (방석이 있으면 자주)
+  if(!nap&&!cat){napT-=dt;if(napT<=0&&S.story.cat1){nap={t:0,dur:rand(30,60)};napT=S.deco.cushion?rand(20,40):rand(60,110)}}
+  if(nap){nap.t+=dt;if(nap.t>nap.dur)nap=null}
+
+  // 장날
+  festT-=dt;
+  if(!fest&&festT<=0){fest={t:0,dur:60};toast('오늘은 완도 장날! 손님이 몰려와요 (판매가 +20%)');fanfare();spawnT=.5}
+  if(fest){fest.t+=dt;if(fest.t>=fest.dur){fest=null;festT=rand(200,320);toast('장날이 끝났어요. 수고했어요!')}}
+
+  // 단골 주문
+  if(!S.order&&S.story.prologue){orderT-=dt;if(orderT<=0)newOrder()}
+
   for(const p of parts){p.t+=dt;p.y-=14*dt}
   parts=parts.filter(p=>p.t<p.life);
+  for(const c of coins){c.t+=dt;c.x+=c.vx*dt;c.y+=c.vy*dt;c.vy+=120*dt}
+  coins=coins.filter(c=>c.t<c.life);
+  for(const c of confetti){c.t+=dt;c.y+=c.vy*dt;c.x+=c.vx*dt+Math.sin(c.t*6)*.3}
+  confetti=confetti.filter(c=>c.y<H+4);
+  if(celebrate){celebrate.t+=dt;if(celebrate.t>3)celebrate=null}
+  if(keeperWave>0)keeperWave-=dt;
   if(say){say.t-=dt;if(say.t<=0)say=null}
   saveT+=dt;if(saveT>5){saveT=0;save()}
 }
@@ -559,14 +697,19 @@ function draw(){
   // 바다
   R(0,40,W,16,mix('#5aa9d6','#283c66',n));R(0,40,W,2,mix('#8cc6e6','#3d5280',n));
   for(let i=0;i<9;i++){const x=Math.round((i*23+S.clock*5)%(W+6))-3;R(x,44+(i*5)%10,3,1,'rgba(255,255,255,.55)')}
-  const bx=Math.round((S.clock*2.5)%(W+30))-15;R(bx,45,9,2,'#e2574c');R(bx+1,47,7,1,'#8a3a32');R(bx+4,40,1,5,'#3b2a2a');R(bx+5,41,3,3,'#fffaf0');
+  const bx=Math.round((S.clock*2.5)%(W+30))-15,bb=Math.round(Math.sin(S.clock*2)*.6);R(bx,45+bb,9,2,'#e2574c');R(bx+1,47+bb,7,1,'#8a3a32');R(bx+4,40+bb,1,5,'#3b2a2a');R(bx+5,41+bb,3,3,'#fffaf0');
   // 땅
   R(0,56,W,80,'#ead9b6');
-  R(0,136,W,40,'#d7c3a0');for(let x=0;x<W;x+=12)R(x,136,1,40,'#cbb48e');R(0,146,W,1,'#cbb48e');R(0,158,W,1,'#cbb48e');R(0,136,W,1,'#b99d76');
-  R(0,176,W,H-176,'#9a958c');R(0,176,W,2,'#7f7a72');for(let x=4;x<W;x+=20)R(x,182,10,2,'#f3e9c8');
+  // 모래사장에 밀려오는 파도
+  const tide=Math.sin(S.clock*.9);
+  R(0,56,W,Math.max(0,Math.round(1+tide*1.5)),mix('#8cc6e6','#3d5280',n));
+  for(let x=0;x<W;x+=7){const o=Math.round(Math.sin(S.clock*1.6+x*.2)*.8+tide*1.2);R(x,56+Math.max(0,o)+1,5,1,'rgba(255,255,255,.75)')}
+  R(0,136,W,32,'#d7c3a0');for(let x=0;x<W;x+=12)R(x,136,1,32,'#cbb48e');R(0,146,W,1,'#cbb48e');R(0,158,W,1,'#cbb48e');R(0,136,W,1,'#b99d76');
+  R(0,168,W,H-168,'#c9b48f');R(0,168,W,1,'#b99d76');
 
   // 간판
-  R(8,15,114,21,'#7a5236');R(10,17,110,17,'#f6e7c8');
+  if(S.deco.signgold){R(8,15,114,21,'#a8742a');R(10,17,110,17,'#f6dc8e');if(Math.floor(S.clock*2)%3===0){R(14,19,1,1,'#fff');R(115,30,1,1,'#fff')}}
+  else{R(8,15,114,21,'#7a5236');R(10,17,110,17,'#f6e7c8')}
   let fs=9;ctx.font=`${fs}px Galmuri11, sans-serif`;while(ctx.measureText(CONFIG.shopName).width>100&&fs>5){fs--;ctx.font=`${fs}px Galmuri11, sans-serif`}
   T(CONFIG.shopName,65,26,fs,'#3b2a2a');
   // 기둥, 내부
@@ -584,13 +727,18 @@ function draw(){
     ctx.globalAlpha=1;
     T(String(st),x+5,y+15,5,st>0?'#fffaf0':'#f4a3a3','center','#3b2a2a');
   });
-  // 주인장
+  // 주인장 (손님이 오면 손을 흔들어요)
   const kb=Math.sin(S.clock*2)>0?0:1;
   spr('person',KEEPER.x-5,KEEPER.y+kb,{c:'#d8584c',h:'#5a4030'});
   R(KEEPER.x-4,KEEPER.y+kb,8,1,'#fffaf0');
+  if(keeperWave>0){const up=Math.floor(keeperWave*8)%2;const ax=KEEPER.x+5,ay=KEEPER.y+kb+(up?2:3);
+    R(ax,ay,3,6,'#3b2a2a');R(ax+1,ay+1,1,5,'#ffdcbf');R(ax+up,ay-1,2,2,'#ffdcbf')}
   // 계산대
   R(10,106,110,3,'#e0a86c');R(10,109,110,13,'#b07a4a');for(let x=20;x<120;x+=14)R(x,109,1,13,'#9c6a3e');R(10,121,110,1,'#8a5a34');
   R(102,101,11,5,'#4f7356');R(104,102,7,1,'#f0b840');R(20,103,10,3,'#c9d3da');R(24,101,2,2,'#8496a2');
+  // 주문서 (주문이 있으면 계산대 위에 쪽지, 준비되면 느낌표)
+  if(S.order){const ob=orderReady()&&Math.floor(S.clock*3)%2?-1:0;R(6,62+ob,10,9,'#3b2a2a');R(7,63+ob,8,7,'#fffaf0');R(10,61+ob,2,2,'#e2574c');R(8,65+ob,6,1,'#8a6f5c');R(8,67+ob,5,1,'#8a6f5c');
+    if(orderReady())T('!',11,56+ob,7,'#ffd35a','center','#3b2a2a')}
   // 아래 벽, 바구니
   R(8,122,114,14,'#ead6b2');
   for(const x of [16,42,68,94]){R(x,125,18,10,'#a8743f');R(x,128,18,1,'#8a5a34');R(x,131,18,1,'#8a5a34');R(x+1,123,16,3,'#c9d3da');for(let k=0;k<5;k++)R(x+2+k*3,123,1,1,'#8496a2')}
@@ -599,6 +747,12 @@ function draw(){
   R(6,35,118,1,'#2f5f8f');
   // 전구
   R(64,51,1,2,'#3b2a2a');R(63,53,3,3,n>0?'#ffe9a0':'#f3e9c8');
+  // 풍경
+  if(S.deco.chime){const sw=Math.round(Math.sin(S.clock*2.4)*1.2);R(82,51,1,3,'#3b2a2a');R(80+sw,54,5,4,'#6fa8c9');R(80+sw,54,5,1,'#3b2a2a');R(82+sw,58,1,3,'#3b2a2a');R(81+sw,61,3,3,'#fffaf0')}
+  // 장날 깃발
+  if(fest){for(let x=4,i=0;x<W-4;x+=8,i++){const sag=Math.round(Math.sin((x/W)*Math.PI)*4),sw=Math.round(Math.sin(S.clock*3+i)*.6);
+    const col=['#e2574c','#f0b840','#4a88c7','#5a9a5e','#f4a6c6'][i%5];R(x,9+sag,8,1,'#3b2a2a');
+    for(let k=0;k<4;k++)R(x+1+k,10+sag+k+sw*0,6-2*k>0?6-2*k:1,1,col)}}
 
   // 건조대
   R(126,40,3,98,'#8a5a34');R(171,40,3,98,'#8a5a34');R(124,136,7,2,'#6b4428');R(169,136,7,2,'#6b4428');
@@ -620,10 +774,20 @@ function draw(){
     }
   }
 
-  // 손님, 고양이 (y 순서)
-  const ents=[...customers.map(c=>({y:c.y,c})),...(cat?[{y:cat.y,cat:true}]:[])].sort((a,b)=>a.y-b.y);
+  // 풍어기
+  if(S.deco.flag){R(127,22,1,18,'#6b4428');const wv=Math.floor(S.clock*4)%2;
+    [['#e2574c'],['#f0b840'],['#4a88c7'],['#5a9a5e']].forEach(([c],i)=>R(128,23+i*2,10-(wv&&i%2?1:0),2,c));R(138-wv,23,1,8,'#3b2a2a')}
+  // 화분
+  if(S.deco.pot){for(const px of [0,174]){R(px,129,6,7,'#c0663e');R(px-1,128,8,2,'#d98a5a');R(px+1,124,2,4,'#4f7356');R(px+3,122,2,6,'#5a9a5e');R(px+2,121,1,2,'#f4a6c6')}}
+  // 치즈 방석과 낮잠
+  if(S.deco.cushion){R(102,134,16,3,'#e2574c');R(103,133,14,1,'#f08a80')}
+  if(nap){spr('catSleep',104,128);const zt=(nap.t%2)/2;ctx.globalAlpha=1-zt;T('z',116+zt*3,126-zt*8,5,'#fffaf0','center','#3b2a2a');ctx.globalAlpha=1}
+
+  // 손님, 고양이, 행인 (y 순서)
+  const ents=[...customers.map(c=>({y:c.y,c})),...walkers.map(w=>({y:w.y,w})),...(cat?[{y:cat.y,cat:true}]:[])].sort((a,b)=>a.y-b.y);
   for(const e of ents){
-    if(e.c){const c=e.c,moving=!(c.state==='wait'),bob=moving&&Math.floor(c.bob)%2?-1:0;
+    if(e.w){const w=e.w;spr('person',w.x-5,w.y-16+(Math.floor(w.bob)%2?-1:0),w.pal,w.dir<0)}
+    else if(e.c){const c=e.c,moving=!(c.state==='wait'),bob=moving&&Math.floor(c.bob)%2?-1:0;
       spr('person',c.x-5,c.y-16+bob,c.pal,c.x>W/2&&c.state!=='wait')}
     else{const fr=Math.floor(cat.t*6)%2?'catB':'catA';spr(fr,cat.x-6,cat.y-8,null,cat.state==='in');
       if(cat.carry)spr(cat.carry,cat.state==='in'?cat.x+4:cat.x-14,cat.y-9)}
@@ -638,14 +802,18 @@ function draw(){
     ctx.fillStyle=`rgba(255,200,120,${.12*n})`;ctx.fillRect(15,48,100,60);
     ctx.fillStyle=`rgba(255,220,140,${.25*n})`;ctx.fillRect(58,52,13,10);
   }
+  // 줄전구 (밤에 반짝여요)
+  if(S.deco.lights){for(let x=10,i=0;x<122;x+=9,i++){const on=n>.2&&(Math.floor(S.clock*2)+i)%5!==0;
+    R(x,51,1,1,'#3b2a2a');R(x-1,52,3,2,on?['#ffe08a','#f4a6c6','#8fd3f2'][i%3]:'#d9cdb8');
+    if(on){ctx.fillStyle=`rgba(255,230,150,${.25*n})`;ctx.fillRect(x-2,51,5,5)}}}
 
   // 말풍선
   for(const c of customers){
     const top=c.y-16;
     if(c.state==='wait'){
       const st=S.stock[c.want];
-      drawBubble(c.x,top-15,24,12);spr(c.want,c.x-11,top-14);
-      T('x'+c.qty,c.x+7,top-9,5,st>0?'#3b2a2a':'#e2574c');
+      drawBubble(c.x,top-15,21,12);spr(c.want,c.x-10,top-14);
+      T('x'+c.qty,c.x+5.5,top-9,5,st>0?'#3b2a2a':'#e2574c');
       const k=1-c.pat/c.maxPat;R(c.x-10,top-19,20,2,'rgba(59,42,42,.35)');R(c.x-10,top-19,Math.round(20*k),2,k>.5?'#5a9a5e':k>.25?'#f0b840':'#e2574c');
     }else if(c.state==='out'&&c.moodT>0){
       if(c.mood==='happy')spr('heart',c.x-3,top-9-(2.2-c.moodT)*3);
@@ -655,7 +823,19 @@ function draw(){
   if(say){ctx.font='5px Galmuri11, sans-serif';const w=Math.ceil(ctx.measureText(say.text).width)+8;
     const cx=Math.min(W-w/2-2,KEEPER.x);drawBubble(cx,KEEPER.y-14,w,10);T(say.text,cx,KEEPER.y-9,5,'#3b2a2a')}
   if(cat&&cat.state==='flee'&&!cat.carry){drawBubble(cat.x,cat.y-20,14,9);T('냥?',cat.x,cat.y-15,5,'#3b2a2a')}
+  for(const c of coins){const x=Math.round(c.x),y=Math.round(c.y),f=Math.floor(c.t*10)%2;
+    R(x-1,y-1,3,3,'#b07a20');R(x-(f?0:1),y-1,f?1:3,3,'#ffd35a');R(x,y,1,1,'#fff6c8')}
   for(const p of parts){ctx.globalAlpha=Math.max(0,1-p.t/p.life);T(p.text,p.x,p.y,6,p.color,'center','#3b2a2a');ctx.globalAlpha=1}
+  for(const c of confetti)R(Math.round(c.x),Math.round(c.y),2,2,c.c);
+  // 장날 남은 시간
+  if(fest){R(3,3,44,10,'#e2574c');R(3,3,44,1,'#f08a80');T(`장날 ${Math.ceil(fest.dur-fest.t)}초`,25,8.5,6,'#fffaf0')}
+  // 레벨업 축하
+  if(celebrate){const t=celebrate.t,a=t<.25?t/.25:t>2.6?Math.max(0,(3-t)/.4):1,dy=Math.round((1-Math.min(1,t/.25))*-8);
+    ctx.globalAlpha=a;const bh=celebrate.rank?40:30,by=58+dy;
+    R(30,by,120,bh,'#3b2a2a');R(31,by+1,118,bh-2,'#fffaf0');R(31,by+1,118,3,'#f0b840');
+    T('레벨 업!',90,by+11,9,'#e2574c');T(`Lv ${celebrate.lv}   보너스 +${fmt(celebrate.bonus)}원`,90,by+22,6,'#3b2a2a');
+    if(celebrate.rank)T(`'${celebrate.rank}' 달성`,90,by+32,6,'#4a88c7');
+    ctx.globalAlpha=1}
 }
 function blendRGB(a,b,k){
   const pa=a.startsWith('rgb')?a.match(/\d+/g).map(Number):hex(a),pb=b.startsWith('rgb')?b.match(/\d+/g).map(Number):hex(b);
@@ -670,6 +850,10 @@ cv.addEventListener('pointerdown',e=>{
   if(cat&&cat.state==='in'&&Math.abs(x-cat.x)<12&&Math.abs(y-(cat.y-4))<10){
     cat.state='flee';const g=8+3*PRODUCTS.filter(p=>S.unlocked[p.id]).length;earn(g,cat.x,cat.y-12);S.shooed++;toast('쉿쉿, 고양이를 돌려보냈어요');blip(900,.06,'triangle');return}
   for(const c of customers){if(c.state==='wait'&&Math.abs(x-c.x)<8&&y>c.y-36&&y<c.y+2){serve(c,true);return}}
+  if(nap&&x>=100&&x<=120&&y>=122&&y<=138){
+    if((nap.pet||0)<3){nap.pet=(nap.pet||0)+1;S.pets++;earn(4+S.level*2,110,124,3);for(let i=0;i<3;i++)parts.push({x:106+i*4,y:124,text:'♥',color:'#f06b7a',t:-i*.12,life:1.1})}
+    toast(pick(['치즈가 골골송을 불러요','치즈가 기지개를 켜요','치즈가 꾹꾹이를 해요']));blip(1320,.05,'triangle');return}
+  if(S.order&&x>=2&&x<=20&&y>=52&&y<=74){switchTab('order');return}
   for(let i=0;i<slotCount();i++){const p=slotPos(i);if(x>=p.x-3&&x<=p.x+13&&y>=p.line-2&&y<=p.line+18){tapSlot(i);return}}
   if(Math.abs(x-KEEPER.x)<8&&y>KEEPER.y-2&&y<KEEPER.y+16){say={text:pick(KEEPER_LINES),t:2};blip(700,.05,'triangle');return}
   PRODUCTS.forEach((p,i)=>{const [sx,sy]=SHELF[i];if(x>=sx-2&&x<=sx+12&&y>=sy-2&&y<=sy+18){
@@ -722,47 +906,72 @@ function renderStory(){
   blip(600+storyIdx*40,.04,'triangle',.025);
 }
 function checkMilestones(){
-  if(S.totalEarned>=3000)queueStory('rank1');
-  if(S.totalEarned>=20000)queueStory('rank2');
-  if(S.totalEarned>=80000)queueStory('rank3');
-  if(S.totalEarned>=300000)queueStory('ending');
+  if(celebrate)return; // 레벨업 연출이 끝난 뒤에 이야기를 보여줘요
+  if(S.level>=4)queueStory('rank1');
+  if(S.level>=8)queueStory('rank2');
+  if(S.level>=13)queueStory('rank3');
+  if(S.level>=20)queueStory('ending');
 }
 $('#sheet .sheet-bg').addEventListener('click',()=>{if(performance.now()-sheetOpenedAt>450)closeSheet()});
 
 function sig(){
-  return tab+'|'+JSON.stringify(S.stock)+JSON.stringify(S.up)+JSON.stringify(S.unlocked)+'|'+
-    PRODUCTS.map(p=>S.coins>=p.unlock?1:0).join('')+UPS.map(u=>S.up[u.id]<u.max&&S.coins>=u.cost(S.up[u.id])?1:0).join('')+
-    (tab==='shop'?Math.floor(S.totalEarned/50)+'|'+S.served+'|'+Object.keys(S.story).length:'');
+  return tab+'|'+JSON.stringify(S.stock)+JSON.stringify(S.up)+JSON.stringify(S.unlocked)+JSON.stringify(S.deco)+JSON.stringify(S.order)+'|'+S.level+'|'+
+    PRODUCTS.map(p=>(S.coins>=p.unlock?1:0)+''+stampLv(p.id)).join('')+UPS.map(u=>S.up[u.id]<u.max&&S.coins>=u.cost(S.up[u.id])?1:0).join('')+
+    DECOS.map(d=>S.coins>=d.cost?1:0).join('')+
+    (tab==='shop'?Math.floor(S.totalEarned/50)+'|'+S.served+'|'+Object.keys(S.story).length:'')+
+    (tab==='stock'?JSON.stringify(S.sold):'');
+}
+function stampHTML(id){
+  const sold=S.sold[id]||0,next=STAMPS.find(s=>sold<s[0]);
+  return `<div class="stamps">${STAMPS.map(s=>`<span class="stamp ${sold>=s[0]?'got':''}" style="${sold>=s[0]?`background:${s[2]}`:''}">${s[1]}</span>`).join('')}
+    <small style="margin:0 0 0 4px;align-self:center">${next?`판매 ${sold}/${next[0]}`:'도장 완성!'}</small></div>`;
 }
 function renderPanel(force){
   const s=sig();if(!force&&s===lastSig)return;lastSig=s;
   const P=$('#panel');
+  document.querySelector('.tabs .dot').classList.toggle('on',!!orderReady());
   if(tab==='stock'){
-    P.innerHTML=`<div class="hint">건조대의 빈칸을 눌러 건어물을 걸어보세요. 기다리는 손님을 톡 누르면 바로 팔고 10% 더 받아요. 갈매기랑 고양이는 눌러서 쫓아주세요!</div>`+
+    P.innerHTML=`<div class="hint">많이 팔수록 도감 도장(동, 은, 금)을 받고, 도장마다 그 상품 판매가가 5% 올라요.</div>`+
     PRODUCTS.map(p=>S.unlocked[p.id]
-      ?`<div class="row"><img src="${ICONS[p.id]}"><div class="info"><b>${p.name}</b><small>재고 ${S.stock[p.id]}개 / 개당 ${fmt(priceEff(p))}원<br>${p.note}</small></div></div>`
+      ?`<div class="row"><img src="${ICONS[p.id]}"><div class="info"><b>${p.name}</b><small>재고 ${S.stock[p.id]}개 / 개당 ${fmt(priceEff(p))}원</small>${stampHTML(p.id)}</div></div>`
       :`<div class="row locked"><img src="${ICONS[p.id]}"><div class="info"><b>${p.name}</b><small>${p.note}</small></div>
         <button class="btn green" data-act="unlock" data-id="${p.id}" ${S.coins<p.unlock?'disabled':''}>${fmt(p.unlock)}원에 들여오기</button></div>`).join('');
+  }else if(tab==='order'){
+    const o=S.order;
+    if(!o){P.innerHTML=`<div class="empty">아직 들어온 주문이 없어요.<br>곧 단골손님이 찾아올 거예요.<br><br>지금까지 보낸 주문 <b>${S.ordersDone}건</b></div>`}
+    else{const have=Math.min(S.stock[o.pid],o.qty),ok=have>=o.qty;
+      P.innerHTML=`<div class="order"><div class="top"><img class="pt" src="${portraitURL(o.who)}"><div><div class="who">${CAST[o.who].name}</div><div class="talk">${o.talk}</div></div></div>
+        <div class="need"><img src="${ICONS[o.pid]}"><b>${PM[o.pid].name}</b><div class="bar"><i style="width:${Math.round(have/o.qty*100)}%"></i></div><span>${have}/${o.qty}</span></div>
+        <div class="reward">보상 ${fmt(o.reward)}원 (경험치도 같이 올라요)</div>
+        <button class="btn ${ok?'red':''} big" data-act="deliver" ${ok?'':'disabled'}>${ok?'주문 보내기':`${PM[o.pid].name}가 ${o.qty-have}개 더 필요해요`}</button>
+        <button class="btn ghost big" data-act="skip" style="margin-top:6px">이 주문은 넘기기</button></div>
+        <div class="hint" style="margin-top:10px">지금까지 보낸 주문 ${S.ordersDone}건</div>`}
   }else if(tab==='up'){
-    P.innerHTML=UPS.map(u=>{const l=S.up[u.id],maxed=l>=u.max;
+    P.innerHTML=`<div class="sec">가게 키우기</div>`+UPS.map(u=>{const l=S.up[u.id],maxed=l>=u.max;
       return`<div class="row"><div class="info"><b>${u.name}</b><span class="lv">${u.max>1?`Lv ${l}/${u.max}`:(maxed?'완료':'')}</span><small>${u.desc()}</small></div>
-      ${maxed?'<button class="btn" disabled>완료</button>':`<button class="btn" data-act="up" data-id="${u.id}" ${S.coins<u.cost(l)?'disabled':''}>${fmt(u.cost(l))}원</button>`}</div>`}).join('');
+      ${maxed?'<button class="btn" disabled>완료</button>':`<button class="btn" data-act="up" data-id="${u.id}" ${S.coins<u.cost(l)?'disabled':''}>${fmt(u.cost(l))}원</button>`}</div>`}).join('')+
+    `<div class="sec">가게 꾸미기</div>`+DECOS.map(d=>`<div class="row"><div class="info"><b>${d.name}</b><small>${d.desc}</small></div>
+      ${S.deco[d.id]?'<button class="btn" disabled>설치함</button>':`<button class="btn green" data-act="deco" data-id="${d.id}" ${S.coins<d.cost?'disabled':''}>${fmt(d.cost)}원</button>`}</div>`).join('');
   }else{
-    P.innerHTML=`<div class="shopcard"><div class="sign">${CONFIG.shopName}</div>
-      ${CONFIG.realShopName?`<div class="meta">실제 가게: <b>${CONFIG.realShopName}</b></div>`:''}
+    P.innerHTML=`<div class="shopcard">
+      <div class="real">
+        <div class="rl">게임 속 가게의 진짜 모델</div>
+        <div class="rn">${CONFIG.realShopName||CONFIG.shopName}</div>
+        ${CONFIG.shopAddress?`<div class="ri">${CONFIG.shopAddress}</div>`:''}
+        ${CONFIG.shopPhone?`<div class="ri"><a href="tel:${CONFIG.shopPhone.replace(/-/g,'')}">${CONFIG.shopPhone}</a></div>`:''}
+        <button class="btn red big" data-act="visit">진짜 가게 구경하러 가기</button>
+      </div>
       <p>${CONFIG.shopIntro}</p>
-      ${CONFIG.shopAddress?`<div class="meta">${CONFIG.shopAddress}</div>`:''}
-      ${CONFIG.shopPhone?`<div class="meta"><a href="tel:${CONFIG.shopPhone.replace(/-/g,'')}">${CONFIG.shopPhone}</a></div>`:''}
-      <button class="btn red big" data-act="visit">진짜 가게 구경하러 가기</button>
       ${CONFIG.supportAccount?`<button class="btn ghost big" data-act="support">사장님께 응원 보내기</button>`:''}
-      <div class="stats"><div>누적 매출<b>${fmt(S.totalEarned)}원</b></div><div>모신 손님<b>${fmt(S.served)}명</b></div><div>지킨 건어물<b>${fmt(S.shooed)}번</b></div></div>
+      <div class="stats"><div>누적 매출<b>${fmt(S.totalEarned)}원</b></div><div>모신 손님<b>${fmt(S.served)}명</b></div><div>보낸 주문<b>${fmt(S.ordersDone)}건</b></div></div>
+      <div class="stats" style="margin-top:8px"><div>지킨 건어물<b>${fmt(S.shooed)}번</b></div><div>치즈 쓰다듬기<b>${fmt(S.pets)}번</b></div><div>가게 레벨<b>Lv ${S.level}</b></div></div>
       <div class="replay"><div class="rt">지난 이야기 다시 보기</div>
         ${STORY_ORDER.map(id=>S.story[id]?`<button class="chip" data-act="replay" data-id="${id}">${STORY[id].title}</button>`:`<span class="chip off">???</span>`).join('')}</div>
       <button class="reset" data-act="reset">처음부터 다시 하기</button></div>`;
   }
 }
-document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on');tab=b.dataset.tab;renderPanel(true)}));
+function switchTab(t){tab=t;document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x.dataset.tab===t));$('#panel').scrollTop=0;renderPanel(true)}
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
 
 document.addEventListener('click',e=>{
   const b=e.target.closest('[data-act]');if(!b||b.disabled)return;
@@ -777,11 +986,14 @@ document.addEventListener('click',e=>{
   else if(a==='clear'){const sl=S.slots[slot];sl.p=null;sl.t=0;sl.done=false;closeSheet()}
   else if(a==='unlock'){const p=PM[id];if(S.coins>=p.unlock){S.coins-=p.unlock;S.unlocked[id]=true;toast(`${p.name}를 들여왔어요!`);sfxCoin();queueStory(id);save()}}
   else if(a==='up'){const u=UPS.find(x=>x.id===id),l=S.up[id],c=u.cost(l);if(l<u.max&&S.coins>=c){S.coins-=c;S.up[id]++;toast(`${u.name} 완료!`);sfxCoin();if(id==='staff')queueStory('staff');save()}}
+  else if(a==='deliver'){deliverOrder()}
+  else if(a==='skip'){skipOrder()}
+  else if(a==='deco'){const d=DECOS.find(x=>x.id===id);if(d&&!S.deco[id]&&S.coins>=d.cost){S.coins-=d.cost;S.deco[id]=1;toast(`${d.name}을 설치했어요!`);sfxCoin();coinBurst(90,60,8);save()}}
   else if(a==='visit'){if(CONFIG.shopUrl)window.open(CONFIG.shopUrl,'_blank');else toast('가게 링크는 곧 열려요!')}
   else if(a==='support'){navigator.clipboard&&navigator.clipboard.writeText(CONFIG.supportAccount);toast('계좌번호를 복사했어요. 응원 감사합니다!')}
   else if(a==='reset'){openSheet(`<h3>처음부터 다시 할까요?</h3><div class="sub">모은 돈과 가게 성장 기록이 모두 사라져요.</div>
     <button class="btn red big" data-act="reset2">네, 다시 할래요</button><button class="btn ghost big" data-act="close">아니요</button>`)}
-  else if(a==='reset2'){S=fresh();customers=[];gull=null;cat=null;storyQ=[];save();closeSheet();queueStory('prologue');renderPanel(true)}
+  else if(a==='reset2'){S=fresh();customers=[];gull=null;cat=null;nap=null;fest=null;storyQ=[];orderT=12;save();closeSheet();queueStory('prologue');renderPanel(true)}
   renderPanel(true);
 });
 function soundSheet(){
@@ -811,10 +1023,10 @@ function applyOffline(){
   if(S.up.staff){
     let demand=Math.floor(el/spawnInt()*2*.6);
     const ids=PRODUCTS.filter(p=>S.stock[p.id]>0).map(p=>p.id).sort((a,b)=>PM[b].price-PM[a].price);
-    while(demand>0&&ids.some(id=>S.stock[id]>0)){for(const id of ids){if(demand<=0)break;if(S.stock[id]>0){S.stock[id]--;demand--;sold++;earned+=priceEff(PM[id])}}}
+    while(demand>0&&ids.some(id=>S.stock[id]>0)){for(const id of ids){if(demand<=0)break;if(S.stock[id]>0){S.stock[id]--;demand--;sold++;S.sold[id]=(S.sold[id]||0)+1;earned+=priceEff(PM[id])}}}
     S.served+=Math.round(sold/2);
   }
-  S.coins=Math.max(0,S.coins+earned-spent);S.totalEarned+=earned;
+  S.coins=Math.max(0,S.coins+earned-spent);S.totalEarned+=earned;addXP(earned);
   S.clock+=el;
   const h=Math.floor(el/3600),m=Math.floor(el%3600/60);
   const done=[...Array(slotCount()).keys()].filter(i=>S.slots[i].done).length;
@@ -828,13 +1040,15 @@ function applyOffline(){
 }
 
 /* ---------------- 시작 ---------------- */
-let last=performance.now(),coinShown=-1;
+let last=performance.now(),coinShown=-1,hudLvShown=-1,xpShown=-1;
 function loop(now){
   const dt=Math.min(.1,(now-last)/1000);last=now;
   if(!storyCur)update(dt);
   checkMilestones();pumpStory();draw();
   if(Math.floor(S.coins)!==coinShown){coinShown=Math.floor(S.coins);$('#hudCoins').textContent=fmt(S.coins)}
-  $('#hudRank').textContent=rankName();
+  if(hudLvShown!==S.level){hudLvShown=S.level;$('#hudLv').textContent='Lv '+S.level;$('#hudRank').textContent=rankName()}
+  const xw=S.level>=LV_MAX?100:Math.min(100,S.xp/needXP(S.level)*100);
+  if(Math.abs(xw-xpShown)>.3){xpShown=xw;$('#xpFill').style.width=xw.toFixed(1)+'%'}
   renderPanel(false);
   requestAnimationFrame(loop);
 }
