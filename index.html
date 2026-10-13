@@ -342,8 +342,8 @@ function startWaves(){
 }
 function bgmStart(){
   if(!S.bgm||BGM.playing||!ensureAC())return;
-  BGM.master=AC.createGain();BGM.master.gain.value=0;BGM.master.connect(AC.destination);
-  BGM.master.gain.linearRampToValueAtTime(.55,AC.currentTime+1.5);
+  BGM.master=AC.createGain();BGM.master.connect(AC.destination);
+  BGM.master.gain.setValueAtTime(0,AC.currentTime);BGM.master.gain.linearRampToValueAtTime(.55,AC.currentTime+1.5);
   BGM.playing=true;BGM.step=0;BGM.next=AC.currentTime+.1;
   startWaves();
   BGM.timer=setInterval(()=>{
@@ -354,13 +354,31 @@ function bgmStart(){
 }
 function bgmStop(){
   if(!BGM.playing)return;
-  clearInterval(BGM.timer);BGM.playing=false;
+  clearInterval(BGM.timer);BGM.playing=false;if(silentEl)silentEl.pause();
   const m=BGM.master,w=BGM.wave;
   m.gain.cancelScheduledValues(AC.currentTime);m.gain.setValueAtTime(m.gain.value,AC.currentTime);m.gain.linearRampToValueAtTime(0,AC.currentTime+.6);
   setTimeout(()=>{try{w.forEach(n=>n.stop());m.disconnect()}catch(e){}},700);
 }
-// 브라우저는 사용자가 한 번 터치해야 소리를 낼 수 있어서, 첫 터치 때 음악을 시작해요
-document.addEventListener('pointerdown',()=>{ensureAC();bgmStart()},{passive:true});
+// 아이폰 무음 모드에서도 소리가 나도록, 오디오를 '미디어 재생'으로 취급하게 해요
+try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+let silentEl=null;
+function silentWavURL(){
+  const n=4410,b=new ArrayBuffer(44+n*2),v=new DataView(b),w=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i))};
+  w(0,'RIFF');v.setUint32(4,36+n*2,true);w(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);
+  v.setUint32(24,44100,true);v.setUint32(28,88200,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,n*2,true);
+  return URL.createObjectURL(new Blob([b],{type:'audio/wav'}));
+}
+// 브라우저는 사용자가 화면을 눌러야 소리를 낼 수 있어요. 아이폰은 손을 뗄 때만 허용해서 여러 신호에 다 걸어둬요
+function unlockAudio(){
+  if(!S.bgm&&!S.sound)return;
+  ensureAC();
+  try{if(!silentEl){silentEl=new Audio(silentWavURL());silentEl.loop=true;silentEl.setAttribute('playsinline','')}
+    silentEl.play().catch(()=>{})}catch(e){}
+  if(AC&&AC.state!=='running')AC.resume().catch(()=>{});
+  bgmStart();
+  if(AC&&AC.state==='running')['pointerup','touchend','click','keydown'].forEach(ev=>document.removeEventListener(ev,unlockAudio,true));
+}
+['pointerup','touchend','click','keydown'].forEach(ev=>document.addEventListener(ev,unlockAudio,true));
 
 /* ---------------- 캔버스 ---------------- */
 const W=180,H=210;
@@ -747,7 +765,7 @@ document.addEventListener('click',e=>{
   if(a==='close')closeSheet();
   else if(a==='storynext'){if(storyIdx<STORY[storyCur.id].lines.length-1){storyIdx++;renderStory()}else closeSheet();return}
   else if(a==='replay'){playStory(id);return}
-  else if(a==='tbgm'){S.bgm=!S.bgm;S.bgm?bgmStart():bgmStop();save();refreshSoundBtn();soundSheet();sheetOpenedAt=0;return}
+  else if(a==='tbgm'){S.bgm=!S.bgm;if(S.bgm){unlockAudio()}else bgmStop();save();refreshSoundBtn();soundSheet();sheetOpenedAt=0;return}
   else if(a==='tsfx'){S.sound=!S.sound;if(S.sound)blip(880,.06);save();refreshSoundBtn();soundSheet();sheetOpenedAt=0;return}
   else if(a==='hang'){if(hang(slot,id))closeSheet()}
   else if(a==='clear'){const sl=S.slots[slot];sl.p=null;sl.t=0;sl.done=false;closeSheet()}
@@ -815,8 +833,8 @@ function loop(now){
   requestAnimationFrame(loop);
 }
 document.addEventListener('visibilitychange',()=>{
-  if(document.hidden){save();if(AC)AC.suspend()}
-  else{last=performance.now();if(AC)AC.resume();applyOffline()}
+  if(document.hidden){save();if(AC)AC.suspend();if(silentEl)silentEl.pause()}
+  else{last=performance.now();if(AC)AC.resume().catch(()=>{});if(silentEl&&BGM.playing)silentEl.play().catch(()=>{});applyOffline()}
 });
 window.addEventListener('pagehide',save);
 

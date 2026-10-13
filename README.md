@@ -74,7 +74,7 @@ const CONFIG = {
 파일을 고쳐서 다시 올릴 때는 `sw.js` 첫 줄의 버전을 하나씩 올려주세요.
 
 ```js
-const VERSION = 'wando-shop-v4';   // → v5, v6 ...
+const VERSION = 'wando-shop-v5';   // → v6, v7 ...
 ```
 
 그래야 이미 설치한 사람들도 새 아이콘과 파일을 받아요.
