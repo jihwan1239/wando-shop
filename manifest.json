@@ -1,0 +1,17 @@
+{
+  "name": "청해진 건어물",
+  "short_name": "청해진 건어물",
+  "description": "완도 바닷바람에 건어물을 말려 파는 픽셀 힐링 가게 키우기 게임",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7ecd6",
+  "theme_color": "#f7ecd6",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

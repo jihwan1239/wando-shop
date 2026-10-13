@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="청해진 건어물">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f7ecd6">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>청해진 건어물</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css">
+<style>
+:root{--bg:#f7ecd6;--panel:#fffaf0;--ink:#3b2a2a;--sub:#8a6f5c;--line:#e3cfae;--blue:#4a88c7;--red:#e2574c;--green:#5a9a5e;--coin:#f0b840}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Galmuri11','Galmuri9',system-ui,sans-serif;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+button{font-family:inherit;color:inherit}
+#app{max-width:480px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+.hud{display:flex;align-items:center;gap:8px;padding:10px 12px 8px}
+.hud .title{flex:1;min-width:0}
+.hud .name{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hud .rank{font-size:11px;color:var(--sub);margin-top:3px}
+.coins{display:flex;align-items:center;gap:6px;background:var(--panel);border:2px solid var(--ink);border-radius:8px;padding:6px 10px;font-size:14px;box-shadow:0 2px 0 var(--ink)}
+.coin{width:12px;height:12px;background:var(--coin);border:2px solid #b07a20;border-radius:50%}
+.icon-btn{width:36px;height:36px;border:2px solid var(--ink);background:var(--panel);border-radius:8px;font-size:15px;box-shadow:0 2px 0 var(--ink)}
+.icon-btn.off{opacity:.45}
+.stage{position:relative;line-height:0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+#cv{display:block;width:100%;image-rendering:pixelated;image-rendering:crisp-edges;touch-action:manipulation}
+#toast{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:rgba(59,42,42,.88);color:#fffaf0;font-size:12px;line-height:1.4;padding:7px 12px;border-radius:8px;white-space:nowrap;opacity:0;transition:opacity .25s;pointer-events:none;max-width:92%;overflow:hidden;text-overflow:ellipsis}
+#toast.on{opacity:1}
+.tabs{display:flex;gap:6px;padding:10px 12px 0}
+.tabs button{flex:1;padding:9px 0;border:2px solid var(--ink);border-bottom:none;background:#ead9b8;border-radius:8px 8px 0 0;font-size:13px}
+.tabs button.on{background:var(--panel);font-weight:700}
+#panel{background:var(--panel);border:2px solid var(--ink);margin:0 12px 16px;border-radius:0 0 10px 10px;padding:12px;flex:1}
+.hint{font-size:12px;color:var(--sub);line-height:1.6;margin-bottom:10px}
+.row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line)}
+.row:last-child{border-bottom:none}
+.row img{width:40px;height:40px;image-rendering:pixelated;background:#f3e6cc;border-radius:6px;padding:2px}
+.row .info{flex:1;min-width:0}
+.row .info b{font-size:14px}
+.row .info small{display:block;font-size:11px;color:var(--sub);margin-top:4px;line-height:1.5}
+.row.locked img{filter:grayscale(1) brightness(.6);opacity:.6}
+.btn{border:2px solid var(--ink);background:var(--blue);color:#fff;border-radius:8px;padding:8px 10px;font-size:12px;box-shadow:0 2px 0 var(--ink);white-space:nowrap}
+.btn:active{transform:translateY(2px);box-shadow:none}
+.btn[disabled]{background:#cfc2aa;color:#7d6c5c;box-shadow:none}
+.btn.red{background:var(--red)}
+.btn.green{background:var(--green)}
+.btn.ghost{background:var(--panel);color:var(--ink)}
+.btn.big{display:block;width:100%;padding:13px;font-size:14px;margin-top:10px}
+.lv{font-size:11px;color:var(--sub);margin-left:4px}
+.shopcard{text-align:center;padding:6px 4px}
+.shopcard .sign{display:inline-block;background:#f6e7c8;border:3px solid #7a5236;padding:8px 16px;font-size:17px;font-weight:700;border-radius:4px;margin-bottom:10px}
+.shopcard p{font-size:13px;line-height:1.7;margin:6px 0;color:var(--ink)}
+.shopcard .meta{font-size:12px;color:var(--sub)}
+.stats{display:flex;gap:8px;margin-top:14px}
+.stats div{flex:1;background:#f3e6cc;border-radius:8px;padding:10px 6px;text-align:center;font-size:11px;color:var(--sub)}
+.stats b{display:block;font-size:15px;color:var(--ink);margin-top:4px}
+.reset{display:block;margin:18px auto 0;background:none;border:none;color:var(--sub);font-size:11px;text-decoration:underline}
+.sheet{position:fixed;inset:0;z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet.hidden{display:none}
+.sheet-bg{position:absolute;inset:0;background:rgba(40,28,20,.45)}
+.sheet-card{position:relative;width:100%;max-width:480px;background:var(--panel);border:2px solid var(--ink);border-bottom:none;border-radius:14px 14px 0 0;padding:16px 16px calc(18px + env(safe-area-inset-bottom));max-height:80dvh;overflow:auto;animation:up .2s ease-out}
+@keyframes up{from{transform:translateY(30px);opacity:.5}to{transform:none;opacity:1}}
+.sheet-card h3{margin:0 0 6px;font-size:16px}
+.sheet-card .sub{font-size:12px;color:var(--sub);line-height:1.6;margin-bottom:8px}
+.story .chap{display:inline-block;font-size:11px;color:#fffaf0;background:#4a88c7;border:2px solid var(--ink);border-radius:6px;padding:4px 8px;margin-bottom:12px}
+.say{display:flex;gap:12px;align-items:flex-start;min-height:96px}
+.say .portrait{width:60px;height:96px;image-rendering:pixelated;background:#f3e6cc;border:2px solid var(--ink);border-radius:8px;padding:8px 5px;flex:none;object-fit:contain}
+.say .txt{flex:1}
+.say .who{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:6px}
+.say .line{font-size:15px;line-height:1.75}
+.say.plain{align-items:center;justify-content:center;text-align:center;padding:10px 6px}
+.say.plain .line{color:#5a4636}
+.say.help{background:#eef4fa;border-radius:8px}
+.say.help .who{color:#4a88c7}
+.dots{text-align:right;font-size:11px;color:var(--sub);margin-top:8px}
+.replay{margin-top:18px;text-align:left}
+.replay .rt{font-size:12px;color:var(--sub);margin-bottom:8px}
+.chip{display:inline-block;font-family:inherit;font-size:11px;border:2px solid var(--ink);background:#f3e6cc;border-radius:14px;padding:5px 9px;margin:0 4px 6px 0;color:var(--ink)}
+.chip.off{opacity:.4;border-style:dashed}
+.bar{height:8px;background:#ead9b8;border-radius:4px;overflow:hidden;margin:10px 0}
+.bar i{display:block;height:100%;background:var(--green)}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="hud">
+    <div class="title"><div class="name" id="hudName"></div><div class="rank" id="hudRank"></div></div>
+    <div class="coins"><span class="coin"></span><b id="hudCoins">0</b>원</div>
+    <button id="btnSound" class="icon-btn" aria-label="소리">♪</button>
+  </header>
+  <div class="stage"><canvas id="cv"></canvas><div id="toast"></div></div>
+  <nav class="tabs">
+    <button data-tab="stock" class="on">창고</button>
+    <button data-tab="up">가게 키우기</button>
+    <button data-tab="shop">우리 가게</button>
+  </nav>
+  <section id="panel"></section>
+</div>
+<div id="sheet" class="sheet hidden"><div class="sheet-bg"></div><div class="sheet-card" id="sheetCard"></div></div>
+
+<script>
+/* =========================================================
+   실제 가게 정보 — 여기만 바꾸면 게임 전체에 반영돼요
+   ========================================================= */
+const CONFIG = {
+  shopName: '청해진 건어물',         // 게임 속 가게 이름 (간판)
+  realShopName: '완도어람건어물',    // 실제 가게 이름 (우리 가게 탭, 엔딩에 표시)
+  shopIntro: '게임 속 청해진 건어물은 완도에 실제로 있는 건어물 가게를 모티브로 만들었어요. 완도 바다에서 난 멸치, 미역, 다시마, 김, 전복을 바닷바람에 말려 팝니다.',
+  shopUrl: '',                       // 스마트스토어, 인스타 등 실제 가게 링크
+  shopAddress: '',                   // 예: 부산 자갈치시장 OO호
+  shopPhone: '',                     // 예: 051-000-0000
+  supportAccount: '',                // 비워두면 응원 버튼이 안 보여요
+};
+
+/* ---------------- 데이터 ---------------- */
+const PRODUCTS = [
+  {id:'anchovy', name:'멸치',   price:8,   cost:15,  time:10, batch:5, unlock:0,     note:'완도 앞바다 멸치, 볶음도 국물도'},
+  {id:'miyeok',  name:'미역',   price:20,  cost:40,  time:18, batch:5, unlock:150,   note:'해녀 이모가 물질해서 딴 미역'},
+  {id:'dasima',  name:'다시마', price:35,  cost:70,  time:25, batch:5, unlock:600,   note:'국물 맛의 비밀, 하얀 가루는 맛이에요'},
+  {id:'gim',     name:'김',     price:60,  cost:120, time:35, batch:5, unlock:2000,  note:'겨울 바다 김발에서 온 김'},
+  {id:'squid',   name:'오징어', price:110, cost:220, time:50, batch:5, unlock:6000,  note:'선장님 배에서 바로 받은 오징어'},
+  {id:'abalone', name:'건전복', price:180, cost:350, time:70, batch:5, unlock:15000, note:'완도의 자랑, 선물용으로 인기'},
+];
+const PM = Object.fromEntries(PRODUCTS.map(p=>[p.id,p]));
+
+const UPS = [
+  {id:'rack',  name:'건조대 늘리기',    max:4, cost:l=>[120,450,1500,5000][l], desc:()=>`말릴 칸이 하나 늘어요 (${slotCount()}칸)`},
+  {id:'fan',   name:'선풍기 놓기',      max:5, cost:l=>Math.round(90*Math.pow(2.3,l)),  desc:()=>'건어물이 10% 더 빨리 말라요'},
+  {id:'pack',  name:'예쁜 포장',        max:8, cost:l=>Math.round(160*Math.pow(2.2,l)), desc:()=>'판매가가 15% 올라요'},
+  {id:'sign',  name:'간판 꾸미기',      max:6, cost:l=>Math.round(130*Math.pow(2.1,l)), desc:()=>'손님이 더 자주 와요'},
+  {id:'staff', name:'알바생 고용',      max:1, cost:()=>900,  desc:()=>'손님을 알아서 응대해요. 자리 비워도 팔아요'},
+  {id:'auto',  name:'자동 건조 시스템', max:1, cost:()=>3000, desc:()=>'다 마르면 알아서 거두고 다시 걸어요'},
+];
+
+const RANKS = [[0,'항구 앞 작은 가게'],[3000,'완도항 단골집'],[20000,'섬마을 명물'],[80000,'남도 건어물 맛집'],[300000,'전국구 완도 건어물']];
+const KEEPER_LINES = ['어서오세요~','완도 바람이 다 말려줬어요','다시마는 국물용으로 최고예요','건전복은 선물용으로 인기예요','청산도 가시는 길이세요?','천천히 구경하세요~'];
+const WET={t:'#e7b98a',s:'#a9c1d1',v:'#7d9db8',g:'#335a45',G:'#5a8060',a:'#6f7046',b:'#d99a69',y:'#e4c486',p:'#f7a98a',j:'#c9a888'};
+
+/* ---------------- 등장인물, 이야기 ---------------- */
+const CAST={
+  me:     {name:'나',         pal:{c:'#d8584c',h:'#5a4030'}},
+  halmae: {name:'금순 할머니', pal:{c:'#9b6fb0',h:'#d6d0c6'}},
+  haenyeo:{name:'해녀 이모',   pal:{c:'#2f3e55',h:'#2a2222',f:'#f0c49c'}},
+  captain:{name:'박 선장님',   pal:{c:'#3f6fa8',h:'#2a2222',f:'#e8b48a'}},
+  dongsu: {name:'알바생 동수', pal:{c:'#9ccf8a',h:'#3a2a20'}},
+  narr:   {name:''},
+  help:   {name:'도움말'},
+};
+const STORY={
+  prologue:{title:'프롤로그. 완도로',lines:[
+    ['narr','서울살이 3년째. 야근하고 돌아온 밤, 완도 할머니한테서 전화가 왔다.'],
+    ['halmae','아가, 할미가 허리를 좀 삐끗했어야. 한 달만 가게 좀 봐줄 수 있겄냐?'],
+    ['narr','그렇게 짐을 싸서 내려온 완도항. 바닷바람 냄새가 어릴 때 그대로다.'],
+    ['halmae','건조대 두 칸이랑 멸치 한 바구니. 이게 우리 청해진 건어물 밑천이여. 천천히 해봐.'],
+    ['me','일단 손님 오면 웃으면서 어서오세요부터 하자.'],
+    ['help','건조대 빈칸을 눌러 멸치를 걸어보세요. 다 마르면 눌러서 거두고, 기다리는 손님을 누르면 팔려요.']]},
+  gull1:{title:'갈매기 대장 깍깍이',lines:[
+    ['narr','하늘에서 수상한 그림자 하나가 건조대 쪽으로 내려온다.'],
+    ['me','저 갈매기... 지금 우리 멸치 보고 있는 거 맞지?'],
+    ['halmae','깍깍이여, 저놈. 동네 갈매기 대장이여. 보이면 바로 훠이 해야 혀.'],
+    ['help','갈매기를 눌러 쫓아내면 보너스를 받아요.']]},
+  cat1:{title:'치즈',lines:[
+    ['narr','가게 옆 골목에서 노란 고양이가 슬금슬금 다가온다.'],
+    ['haenyeo','아따, 치즈 저놈 또 왔네. 동네 사람들이 다 밥 주는디 건어물은 또 따로 챙겨 먹어야.'],
+    ['me','이름이 치즈구나. 귀엽긴 한데 우리 건 안 돼!'],
+    ['help','고양이도 눌러서 돌려보낼 수 있어요.']]},
+  miyeok:{title:'1장. 해녀 이모의 미역',lines:[
+    ['haenyeo','니가 금순 언니 손주구나? 오메, 언제 이렇게 컸대.'],
+    ['haenyeo','오늘 물질해서 딴 미역이여. 볕 좋을 때 잘 말려서 팔아봐.'],
+    ['me','감사해요 이모! 제대로 말려볼게요.']]},
+  dasima:{title:'2장. 바람이 반, 햇볕이 반',lines:[
+    ['narr','저녁에 할머니한테서 전화가 왔다. 다시마를 들여왔다는 소식을 벌써 들으신 모양이다.'],
+    ['halmae','다시마는 서두르면 안 돼야. 바람이 반, 햇볕이 반이여.'],
+    ['halmae','겉에 하얀 가루 올라온 거, 그거 곰팡이 아니고 맛이다잉. 절대 닦아내지 말어.'],
+    ['me','하얀 가루는 맛. 수첩에 적어놨어요 할머니.']]},
+  staff:{title:'3장. 든든한 동수',lines:[
+    ['dongsu','안녕하세요! 윗동네 사는 동수예요. 방학 동안 알바 구하신다고 해서요.'],
+    ['me','손님 오시면 응대 좀 부탁할게. 나 자리 비워도 괜찮게.'],
+    ['dongsu','맡겨만 주세요. 계산은 자신 있어요!'],
+    ['help','이제 앱을 꺼둬도 동수가 가게를 봐요.']]},
+  gim:{title:'4장. 김발이 서는 계절',lines:[
+    ['narr','바다 위로 김발이 줄지어 섰다. 완도에 겨울이 왔다.'],
+    ['haenyeo','김은 추울 때 해야 맛있어. 올해 첫 김이니께 니가 제일 먼저 팔아봐.'],
+    ['me','첫 김이라니. 왠지 긴장되네요.']]},
+  squid:{title:'5장. 박 선장님의 배',lines:[
+    ['captain','어이, 금순 할매네 손주! 오늘 배가 오징어를 한가득 싣고 왔당께.'],
+    ['captain','할매 가게엔 내가 젤 좋은 놈으로 골라왔어. 대신 단골 좀 팍팍 늘려놔라잉.'],
+    ['me','네 선장님, 이 오징어 다 팔아볼게요!']]},
+  abalone:{title:'6장. 할머니의 선물',lines:[
+    ['narr','한 달이 훌쩍 지났다. 허리가 다 나은 할머니가 가게에 들렀다.'],
+    ['halmae','이제 할미 허리도 다 나았는디... 가게는 니가 계속 해볼라냐?'],
+    ['me','...네. 여기 있으니까 이상하게 숨이 쉬어져요.'],
+    ['halmae','그럼 이거 받아라. 할미가 아끼던 건전복 거래처여. 완도 자랑이 전복 아니냐.'],
+    ['narr','그날부터 간판은 그대로, 주인만 바뀌었다.']]},
+  rank1:{title:'소문',lines:[
+    ['haenyeo','요새 시장에서 니 가게 얘기 많이 하더라. 젊은 사장이 싹싹하다고.'],
+    ['me','진짜요? 헤헤.']]},
+  rank2:{title:'섬마을 명물',lines:[
+    ['narr','청산도 가는 배를 기다리는 여행객들이 꼭 한 번씩 들르는 가게가 됐다.'],
+    ['me','가게 앞에서 사진 찍는 사람까지 생겼네.']]},
+  rank3:{title:'서울에서 온 주문',lines:[
+    ['captain','서울서 온 손님이 니 가게 멸치 맛있다고, 택배로 좀 보내달라더라!'],
+    ['me','서울 살 땐 몰랐는데, 완도 멸치가 이렇게 맛있는 거였구나.']]},
+  ending:{title:'에필로그. 완도 사람',lines:[
+    ['halmae','할미가 평생 지킨 가게를 니가 이렇게 키울 줄은 몰랐다.'],
+    ['halmae','고맙다, 아가. 이제 진짜 완도 사람 다 됐네.'],
+    ['narr','오늘도 청해진 건어물에는 바닷바람이 분다.'],
+    ['help','이 게임은 완도에 실제로 있는 건어물 가게를 모티브로 만들었어요. 우리 가게 탭에서 진짜 가게를 구경할 수 있어요.']]},
+};
+const STORY_ORDER=['prologue','gull1','cat1','miyeok','dasima','staff','gim','squid','abalone','rank1','rank2','rank3','ending'];
+
+/* ---------------- 픽셀 스프라이트 ---------------- */
+const PAL={k:'#3b2a2a',w:'#fffaf0',t:'#efcf98',T:'#cf9f5f',s:'#c9d3da',S:'#8496a2',g:'#2c4636',G:'#4f7356',b:'#c98a4f',B:'#8a5228',y:'#ecd189',Y:'#c9a45a',p:'#f59b72',P:'#d9674a',r:'#f4a3a3',e:'#2a1f1f',o:'#f0a040',v:'#5d7d9a',a:'#5e5d34',A:'#45452a',j:'#b8946e',J:'#8f6c50',i:'#a9cfc6',m:'#f2b366',M:'#d98a3d',h:'#4a3428',f:'#ffdcbf',c:'#7fb3d5',d:'#556080',R:'#f06b7a'};
+const SPR={
+  squid:["....kk....","...kttk...","..kttttk..","..kttttk..","..kttTtk..","..kttttk..","..kTttTk..",".kttttttk.",".ktkttktk.",".k.k..k.k."],
+  anchovy:["..........",".kkkkkkk.k","kvevvvvvkv","kwsssssSkS",".kkkkkkk.k","k.kkkkkkk.","vkvvvvvevk","SkSssssswk","k.kkkkkkk.",".........."],
+  gim:["..........",".kkkkkkkk.",".kgggGggk.",".kgGgggGk.",".kggggggk.",".kgggGggk.",".kGgggggk.",".kggggGgk.",".kkkkkkkk.",".........."],
+  miyeok:[".k...k...k","kGk.kGk.kG",".kgk.kgk.k","kgk.kgk.kg",".kgk.kgk.k","kgk.kgk.kg",".kGk.kGk.k","kgk.kgk.kg",".kk..kk..k",".........."],
+  dasima:["..........","kkkkkkkkk.","kaaaAaaaak","kaAaaawaak","kaaaaaaAak","kawaAaaaak","kaaaaawaak","kaaAaaaaak",".kkkkkkkk.",".........."],
+  abalone:["..........","...kkkk...",".kkjjjjkk.","kjjJjijJjk","kjJjjjjjJk","kjijJJjjjk",".kjjjjjik.","..kkkkkk..","..........",".........."],
+  jwipo:["..........","..kkkkkk..",".kbbbbbbk.","kbbBbbbbbk","kbbbbbBbbk","kbBbbbbbbk","kbbbbBbbbk",".kbbbbbbk.","..kkkkkk..",".........."],
+  hwangtae:["..........","..........","..kkkkkk.k",".keyyyyykk","kyyyYyyyyk","kyYyyYyyyk",".kyyyyyykk","..kkkkkk.k","..........",".........."],
+  shrimp:["..........","...kkkkk..","..kppppepk",".kpPkkkPpk",".kpk...kk.",".kpk......",".kpPk.....","..kppkk...","...kkppk..",".....kk..."],
+  person:["...kkkk...","..khhhhk..",".khhhhhhk.",".khffffhk.",".kfeffefk.",".krffffrk.","..kffffk..","..kccccck.",".kcccccck.","kfccccccfk","kfccccccfk",".kcccccck.",".kddddddk.",".kddkkddk.",".kdk..kdk.",".kkk..kkk."],
+  gullA:[".kk.....kk..","kwwk...kwwk.",".kwwk.kwwk..","..kwwwwwwkk.",".kwwwwwwwwok","..kSwwwwek..","...kkkkkk...","............"],
+  gullB:["............","............","..kwwwwwwkk.",".kwwwwwwwwok","kwwkSwwwek..","kwk.kkkkk...",".k..........","............"],
+  catA:[".k...k......",".kk.kk......","kmmmmmk.....","kmemmek...k.","kmmrmmkkkkmk",".kmmmmmMmmk.",".kmMmmmmMmk.",".kk.kk.kk.k."],
+  catB:[".k...k......",".kk.kk......","kmmmmmk.....","kmemmek...k.","kmmrmmkkkkmk",".kmmmmmMmmk.",".kmMmmmmMmk.","..kk.kk.kk.."],
+  heart:[".kk.kk.","kRRkRRk","kRRRRRk",".kRRRk.","..kRk..","...k..."],
+};
+const _cache={};
+function sprite(name,over,flip){
+  const key=name+'|'+(over?JSON.stringify(over):'')+'|'+(flip?1:0);
+  if(_cache[key])return _cache[key];
+  const rows=SPR[name],h=rows.length,w=Math.max(...rows.map(r=>r.length));
+  const c=document.createElement('canvas');c.width=w;c.height=h;
+  const x=c.getContext('2d');
+  for(let j=0;j<h;j++)for(let i=0;i<rows[j].length;i++){
+    const ch=rows[j][i];if(ch==='.')continue;
+    const col=(over&&over[ch])||PAL[ch];if(!col)continue;
+    x.fillStyle=col;x.fillRect(flip?w-1-i:i,j,1,1);
+  }
+  return _cache[key]=c;
+}
+function iconURL(name,scale=4,over){
+  const s=sprite(name,over),c=document.createElement('canvas');
+  c.width=s.width*scale;c.height=s.height*scale;
+  const x=c.getContext('2d');x.imageSmoothingEnabled=false;x.drawImage(s,0,0,c.width,c.height);
+  return c.toDataURL();
+}
+const ICONS={};PRODUCTS.forEach(p=>ICONS[p.id]=iconURL(p.id));
+
+/* ---------------- 저장 ---------------- */
+const KEY='wando-shop-v1';
+function fresh(){
+  return {coins:60,totalEarned:0,served:0,shooed:0,story:{},
+    stock:Object.fromEntries(PRODUCTS.map(p=>[p.id,0])),
+    unlocked:{anchovy:true},
+    slots:Array.from({length:6},()=>({p:null,t:0,done:false})),
+    up:{rack:0,fan:0,pack:0,sign:0,staff:0,auto:0},
+    lastPid:'anchovy',sound:true,seenIntro:false,clock:20,lastSave:Date.now()};
+}
+let S=fresh();
+try{
+  const raw=localStorage.getItem(KEY);
+  if(raw){const d=JSON.parse(raw);const f=fresh();
+    S={...f,...d,story:{...(d.story||{})},stock:{...f.stock,...d.stock},up:{...f.up,...d.up},unlocked:{...f.unlocked,...d.unlocked},slots:(d.slots&&d.slots.length===6)?d.slots:f.slots};}
+}catch(e){}
+function save(){S.lastSave=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+/* ---------------- 계산 ---------------- */
+const slotCount=()=>2+S.up.rack;
+const timeEff=p=>p.time*(1-0.1*S.up.fan);
+const priceEff=p=>Math.round(p.price*(1+0.15*S.up.pack));
+const spawnInt=()=>7*Math.pow(0.88,S.up.sign);
+const fmt=n=>Math.floor(n).toLocaleString('ko-KR');
+const rand=(a,b)=>a+Math.random()*(b-a);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function rankName(){let r=RANKS[0][1];for(const [v,n] of RANKS)if(S.totalEarned>=v)r=n;return r;}
+
+/* ---------------- 사운드 ---------------- */
+let AC=null;
+function blip(f=880,d=.07,type='square',vol=.04){
+  if(!S.sound)return;
+  try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+    const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=f;
+    g.gain.value=vol;g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+d);
+    o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+d);}catch(e){}
+}
+const sfxCoin=()=>{blip(988,.06);setTimeout(()=>blip(1319,.09),60)};
+
+/* ---------------- 캔버스 ---------------- */
+const W=180,H=210;
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let SC=1;
+function resize(){
+  const cssW=cv.parentElement.clientWidth,dpr=window.devicePixelRatio||1;
+  SC=Math.max(1,Math.ceil(cssW*dpr/W));
+  cv.width=W*SC;cv.height=H*SC;cv.style.height=(cssW*H/W)+'px';
+}
+window.addEventListener('resize',resize);resize();
+const R=(x,y,w,h,c)=>{ctx.fillStyle=c;ctx.fillRect(x,y,w,h)};
+const spr=(n,x,y,over,flip)=>ctx.drawImage(sprite(n,over,flip),Math.round(x),Math.round(y));
+function T(s,x,y,size,color,align='center',outline){
+  ctx.font=`${size}px Galmuri11, Galmuri9, sans-serif`;ctx.textAlign=align;ctx.textBaseline='middle';
+  if(outline){ctx.lineWidth=1.6;ctx.strokeStyle=outline;ctx.lineJoin='round';ctx.strokeText(s,x,y);}
+  ctx.fillStyle=color;ctx.fillText(s,x,y);
+}
+function hex(c){const n=parseInt(c.slice(1),16);return[n>>16&255,n>>8&255,n&255]}
+function mix(a,b,k){const A=hex(a),B=hex(b);return`rgb(${A.map((v,i)=>Math.round(v+(B[i]-v)*k)).join(',')})`}
+
+/* ---------------- 장면 배치 ---------------- */
+const SHELF=[[22,60],[44,60],[66,60],[22,84],[44,84],[66,84]];
+const QX=[26,46,66,86];
+const LINES=[46,86],SX=[131,145,159];
+const slotPos=i=>({x:SX[i%3],line:LINES[Math.floor(i/3)]});
+const KEEPER={x:96,y:92};
+const DAY=300;
+const STARS=Array.from({length:22},(_,i)=>[(i*53+17)%W,(i*29+5)%38]);
+const clouds=[{x:20,y:8,w:22},{x:110,y:16,w:16},{x:160,y:6,w:12}];
+
+let customers=[],parts=[],gull=null,cat=null,say=null;
+let spawnT=2,gullT=rand(40,70),catT=rand(60,100),saveT=0;
+
+function nightAmt(c){if(c<.64)return 0;if(c<.74)return(c-.64)/.1;if(c<.92)return 1;return 1-(c-.92)/.08}
+const SKY=[[0,'#8fd3f2','#dff3f8'],[.55,'#8fd3f2','#dff3f8'],[.66,'#f3a46f','#ffe0a8'],[.74,'#3a3f72','#7a6f9a'],[.92,'#262c55','#4b4f80'],[1,'#8fd3f2','#dff3f8']];
+function skyCols(c){for(let i=0;i<SKY.length-1;i++){const a=SKY[i],b=SKY[i+1];if(c>=a[0]&&c<=b[0]){const k=(c-a[0])/(b[0]-a[0]);return[mix(a[1],b[1],k),mix(a[2],b[2],k)]}}return[SKY[0][1],SKY[0][2]]}
+function circle(cx,cy,r,col){for(let dy=-r;dy<=r;dy++){const w=Math.floor(Math.sqrt(r*r-dy*dy));R(cx-w,cy+dy,2*w+1,1,col)}}
+
+/* ---------------- 손님 ---------------- */
+const SHIRTS=['#7fb3d5','#e58f8f','#9ccf8a','#f2c46d','#b59ad9','#f4a6c6','#8fd1c7'];
+const HAIRS=['#4a3428','#2a2222','#8a5a3a','#bdb6ab'];
+const PANTS=['#556080','#6b5a4a','#3f4a5a','#7a6a8a'];
+function chooseWant(){
+  const un=PRODUCTS.filter(p=>S.unlocked[p.id]);
+  const inStock=un.filter(p=>S.stock[p.id]>0);
+  return (inStock.length&&Math.random()<.75?pick(inStock):pick(un)).id;
+}
+function spawnCustomer(){
+  const used=customers.filter(c=>c.state!=='out').map(c=>c.q);
+  const free=[0,1,2,3].filter(q=>!used.includes(q));
+  if(!free.length)return;
+  const q=pick(free),fromLeft=Math.random()<.5;
+  customers.push({q,x:fromLeft?-8:W+8,y:156,tx:QX[q],state:'in',phase:'walk',want:chooseWant(),qty:1+Math.floor(Math.random()*3),
+    pat:0,maxPat:18,serveT:0,mood:null,moodT:0,exit:0,bob:Math.random()*6,
+    pal:{c:pick(SHIRTS),h:pick(HAIRS),d:pick(PANTS)}});
+}
+function leave(c,mood){c.state='out';c.phase='down';c.mood=mood;c.moodT=2.2;c.exit=c.x<W/2?-12:W+12}
+function earn(n,x,y){S.coins+=n;S.totalEarned+=n;parts.push({x,y,text:'+'+fmt(n)+'원',color:'#ffd35a',t:0,life:1.3})}
+function serve(c,byTap){
+  const p=PM[c.want],have=S.stock[c.want];
+  if(have<=0){if(byTap){toast(`${p.name} 재고가 없어요. 건조대에 걸어주세요!`);blip(220,.12,'triangle')}return false}
+  const n=Math.min(have,c.qty);S.stock[c.want]-=n;
+  let gain=n*priceEff(p);if(byTap)gain=Math.ceil(gain*1.1);
+  earn(gain,c.x,c.y-22);S.served++;leave(c,'happy');
+  say={text:'감사합니다~',t:1.4};sfxCoin();return true;
+}
+
+/* ---------------- 건조대 ---------------- */
+function hang(i,pid){
+  const p=PM[pid],sl=S.slots[i];
+  if(S.coins<p.cost){toast('재료비가 모자라요');return false}
+  S.coins-=p.cost;sl.p=pid;sl.t=0;sl.done=false;S.lastPid=pid;blip(660,.06);return true;
+}
+function collect(i,auto){
+  const sl=S.slots[i],p=PM[sl.p],pos=slotPos(i);
+  S.stock[p.id]+=p.batch;
+  parts.push({x:pos.x+5,y:pos.line+2,text:`+${p.batch} ${p.name}`,color:'#ffffff',t:0,life:1.2});
+  if(!auto)blip(784,.08,'triangle');
+  if(S.coins>=p.cost){S.coins-=p.cost;sl.t=0;sl.done=false}
+  else{sl.p=null;sl.t=0;sl.done=false;if(!auto)toast('재료비가 모자라서 빈칸으로 둘게요')}
+}
+
+/* ---------------- 업데이트 ---------------- */
+function update(dt){
+  S.clock+=dt;
+  for(let i=0;i<slotCount();i++){
+    const sl=S.slots[i];
+    if(sl.p&&!sl.done){sl.t+=dt;if(sl.t>=timeEff(PM[sl.p])){sl.done=true;if(S.up.auto)collect(i,true)}}
+  }
+  spawnT-=dt;
+  if(spawnT<=0){spawnT=spawnInt()*rand(.7,1.3);spawnCustomer()}
+  for(const c of customers){
+    c.bob+=dt*8;
+    if(c.state==='in'){
+      if(c.phase==='walk'){const d=c.tx-c.x;c.x+=Math.sign(d)*Math.min(Math.abs(d),30*dt);if(Math.abs(d)<.5){c.x=c.tx;c.phase='up'}}
+      else{c.y-=20*dt;if(c.y<=141){c.y=141;c.state='wait'}}
+    }else if(c.state==='wait'){
+      c.pat+=dt;
+      if(S.up.staff){c.serveT+=dt;if(c.serveT>2.2&&S.stock[c.want]>0)serve(c,false)}
+      if(c.pat>c.maxPat&&c.state==='wait')leave(c,'angry');
+    }else{
+      c.moodT-=dt;
+      if(c.phase==='down'){c.y+=20*dt;if(c.y>=156){c.y=156;c.phase='walk'}}
+      else c.x+=Math.sign(c.exit-c.x)*32*dt;
+    }
+  }
+  customers=customers.filter(c=>!(c.state==='out'&&(c.x<-14||c.x>W+14)));
+
+  // 갈매기
+  gullT-=dt;
+  if(gullT<=0&&!gull){
+    gullT=rand(45,85);
+    const occ=[...Array(slotCount()).keys()].filter(i=>S.slots[i].p);
+    if(occ.length){const top=occ.filter(i=>i<3);const i=pick(top.length?top:occ);const p=slotPos(i);
+      gull={x:W+12,y:4,tx:p.x-1,ty:p.line-6,slot:i,state:'in',t:0,carry:null};queueStory('gull1')}
+  }
+  if(gull){
+    gull.t+=dt;
+    if(gull.state==='in'){
+      const dx=gull.tx-gull.x,dy=gull.ty-gull.y,dist=Math.hypot(dx,dy),sp=16*dt;
+      if(dist<=sp){
+        const sl=S.slots[gull.slot];
+        if(sl.p){gull.carry=sl.p;toast(`앗, 갈매기가 ${PM[sl.p].name}를 물고 갔어요`);sl.p=null;sl.t=0;sl.done=false;blip(300,.15,'sawtooth',.03)}
+        gull.state='flee';
+      }else{gull.x+=dx/dist*sp;gull.y+=dy/dist*sp}
+    }else{gull.x+=55*dt;gull.y-=35*dt;if(gull.y<-14||gull.x>W+14)gull=null}
+  }
+
+  // 고양이
+  catT-=dt;
+  if(catT<=0&&!cat){
+    catT=rand(60,110);
+    const any=PRODUCTS.some(p=>S.stock[p.id]>0)||[3,4,5].some(i=>i<slotCount()&&S.slots[i].p);
+    if(any){cat={x:-14,y:162,state:'in',t:0,carry:null};queueStory('cat1')}
+  }
+  if(cat){
+    cat.t+=dt;
+    if(cat.state==='in'){
+      cat.x+=13*dt;
+      if(cat.x>=134){
+        const occ=[3,4,5].filter(i=>i<slotCount()&&S.slots[i].p);
+        if(occ.length){const i=pick(occ);cat.carry=S.slots[i].p;toast(`냥! 고양이가 ${PM[cat.carry].name}를 물고 도망갔어요`);S.slots[i].p=null;S.slots[i].t=0;S.slots[i].done=false}
+        else{const st=PRODUCTS.filter(p=>S.stock[p.id]>0);if(st.length){const p=pick(st);S.stock[p.id]-=Math.min(2,S.stock[p.id]);cat.carry=p.id;toast(`냥! 고양이가 ${p.name}를 슬쩍했어요`)}}
+        cat.state='flee';blip(500,.1,'triangle');
+      }
+    }else{cat.x-=45*dt;if(cat.x<-16)cat=null}
+  }
+
+  for(const p of parts){p.t+=dt;p.y-=14*dt}
+  parts=parts.filter(p=>p.t<p.life);
+  if(say){say.t-=dt;if(say.t<=0)say=null}
+  saveT+=dt;if(saveT>5){saveT=0;save()}
+}
+
+/* ---------------- 그리기 ---------------- */
+function drawBubble(cx,by,w,h){
+  const x=Math.round(cx-w/2);
+  R(x,by,w,h,'#fffaf0');R(x,by-1,w,1,'#3b2a2a');R(x,by+h,w,1,'#3b2a2a');R(x-1,by,1,h,'#3b2a2a');R(x+w,by,1,h,'#3b2a2a');
+  R(Math.round(cx)-1,by+h,3,1,'#fffaf0');R(Math.round(cx),by+h+1,1,1,'#3b2a2a');R(Math.round(cx)-2,by+h,1,1,'#3b2a2a');R(Math.round(cx)+2,by+h,1,1,'#3b2a2a');
+}
+function draw(){
+  ctx.setTransform(SC,0,0,SC,0,0);ctx.imageSmoothingEnabled=false;
+  const cyc=(S.clock%DAY)/DAY,n=nightAmt(cyc),[top,bot]=skyCols(cyc);
+  for(let y=0;y<44;y+=2)R(0,y,W,2,blendRGB(top,bot,y/44));
+  if(n>0){ctx.globalAlpha=n;for(const [sx,sy] of STARS)if((Math.floor(S.clock*2)+sx)%7)R(sx,sy,1,1,'#fff7d6');ctx.globalAlpha=1}
+  if(cyc<.7){const k=cyc/.7;circle(Math.round(16+k*150),Math.round(32-Math.sin(k*Math.PI)*24),5,'#ffe08a')}
+  else{ctx.globalAlpha=n;circle(150,12,4,'#f4f1de');R(151,10,2,2,'#ddd8bf');ctx.globalAlpha=1}
+  ctx.globalAlpha=1-n*.6;
+  for(const c of clouds){c.x+=0.04;if(c.x>W+30)c.x=-30;const x=Math.round(c.x);R(x,c.y,c.w,4,'#ffffff');R(x+3,c.y-2,c.w-8,2,'#ffffff');R(x+2,c.y+4,c.w-4,1,'#e6f2f7')}
+  ctx.globalAlpha=1;
+  // 바다
+  R(0,40,W,16,mix('#5aa9d6','#283c66',n));R(0,40,W,2,mix('#8cc6e6','#3d5280',n));
+  for(let i=0;i<9;i++){const x=Math.round((i*23+S.clock*5)%(W+6))-3;R(x,44+(i*5)%10,3,1,'rgba(255,255,255,.55)')}
+  const bx=Math.round((S.clock*2.5)%(W+30))-15;R(bx,45,9,2,'#e2574c');R(bx+1,47,7,1,'#8a3a32');R(bx+4,40,1,5,'#3b2a2a');R(bx+5,41,3,3,'#fffaf0');
+  // 땅
+  R(0,56,W,80,'#ead9b6');
+  R(0,136,W,40,'#d7c3a0');for(let x=0;x<W;x+=12)R(x,136,1,40,'#cbb48e');R(0,146,W,1,'#cbb48e');R(0,158,W,1,'#cbb48e');R(0,136,W,1,'#b99d76');
+  R(0,176,W,34,'#9a958c');R(0,176,W,2,'#7f7a72');for(let x=4;x<W;x+=20)R(x,192,10,2,'#f3e9c8');
+
+  // 간판
+  R(8,15,114,21,'#7a5236');R(10,17,110,17,'#f6e7c8');
+  let fs=9;ctx.font=`${fs}px Galmuri11, sans-serif`;while(ctx.measureText(CONFIG.shopName).width>100&&fs>5){fs--;ctx.font=`${fs}px Galmuri11, sans-serif`}
+  T(CONFIG.shopName,65,26,fs,'#3b2a2a');
+  // 기둥, 내부
+  R(8,36,7,100,'#f3e2c3');R(115,36,7,100,'#f3e2c3');R(14,36,1,86,'#c8ad86');R(115,36,1,86,'#c8ad86');
+  R(15,48,100,60,'#8a6448');for(let x=24;x<115;x+=10)R(x,48,1,60,'#7d5a40');
+  R(16,70,66,3,'#5f4330');R(16,94,66,3,'#5f4330');R(16,70,66,1,'#7a5a42');R(16,94,66,1,'#7a5a42');
+  R(85,50,27,1,'#5f4330');spr('squid',87,51);spr('squid',100,52);
+  // 진열대 상품
+  PRODUCTS.forEach((p,i)=>{
+    const [x,y]=SHELF[i];
+    if(!S.unlocked[p.id]){T('?',x+5,y+5,8,'rgba(255,255,255,.35)');return}
+    const st=S.stock[p.id],cnt=st>0?Math.min(3,1+Math.floor(st/10)):1;
+    if(st<=0)ctx.globalAlpha=.3;
+    for(let k=cnt-1;k>=0;k--)spr(p.id,x-(cnt-1)*1.5+k*3-0,y-k*0);
+    ctx.globalAlpha=1;
+    T(String(st),x+5,y+15,5,st>0?'#fffaf0':'#f4a3a3','center','#3b2a2a');
+  });
+  // 주인장
+  const kb=Math.sin(S.clock*2)>0?0:1;
+  spr('person',KEEPER.x-5,KEEPER.y+kb,{c:'#d8584c',h:'#5a4030'});
+  R(KEEPER.x-4,KEEPER.y+kb,8,1,'#fffaf0');
+  // 계산대
+  R(10,106,110,3,'#e0a86c');R(10,109,110,13,'#b07a4a');for(let x=20;x<120;x+=14)R(x,109,1,13,'#9c6a3e');R(10,121,110,1,'#8a5a34');
+  R(102,101,11,5,'#4f7356');R(104,102,7,1,'#f0b840');R(20,103,10,3,'#c9d3da');R(24,101,2,2,'#8496a2');
+  // 아래 벽, 바구니
+  R(8,122,114,14,'#ead6b2');
+  for(const x of [16,42,68,94]){R(x,125,18,10,'#a8743f');R(x,128,18,1,'#8a5a34');R(x,131,18,1,'#8a5a34');R(x+1,123,16,3,'#c9d3da');for(let k=0;k<5;k++)R(x+2+k*3,123,1,1,'#8496a2')}
+  // 차양
+  for(let x=6,i=0;x<124;x+=8,i++){const col=i%2?'#fffaf0':'#4a88c7';R(x,36,8,12,col);R(x+1,48,6,2,col);R(x+2,50,4,1,col)}
+  R(6,35,118,1,'#2f5f8f');
+  // 전구
+  R(64,51,1,2,'#3b2a2a');R(63,53,3,3,n>0?'#ffe9a0':'#f3e9c8');
+
+  // 건조대
+  R(126,40,3,98,'#8a5a34');R(171,40,3,98,'#8a5a34');R(124,136,7,2,'#6b4428');R(169,136,7,2,'#6b4428');
+  R(127,LINES[0],46,1,'#3b2a2a');R(127,LINES[1],46,1,'#3b2a2a');
+  for(let i=0;i<6;i++){
+    const {x,line}=slotPos(i);
+    if(i>=slotCount()){continue}
+    const sl=S.slots[i];
+    R(x+4,line-1,2,3,'#d9674a');
+    if(sl.p){
+      const p=PM[sl.p],pr=Math.min(1,sl.t/timeEff(p));
+      const by=sl.done&&Math.floor(S.clock*3)%2?-1:0;
+      spr(p.id,x,line+2+by,sl.done?null:WET);
+      if(sl.done){if(Math.floor(S.clock*4)%2){R(x-1,line+3,1,1,'#fff');R(x+11,line+9,1,1,'#fff')}T('!',x+5,line+16,6,'#ffd35a','center','#3b2a2a')}
+      else{R(x,line+14,10,2,'rgba(59,42,42,.3)');R(x,line+14,Math.round(10*pr),2,'#5a9a5e')}
+    }else{
+      ctx.globalAlpha=.55;R(x,line+3,10,1,'#fffaf0');R(x,line+12,10,1,'#fffaf0');R(x,line+3,1,10,'#fffaf0');R(x+9,line+3,1,10,'#fffaf0');
+      T('+',x+5,line+8,7,'#fffaf0');ctx.globalAlpha=1;
+    }
+  }
+
+  // 손님, 고양이 (y 순서)
+  const ents=[...customers.map(c=>({y:c.y,c})),...(cat?[{y:cat.y,cat:true}]:[])].sort((a,b)=>a.y-b.y);
+  for(const e of ents){
+    if(e.c){const c=e.c,moving=!(c.state==='wait'),bob=moving&&Math.floor(c.bob)%2?-1:0;
+      spr('person',c.x-5,c.y-16+bob,c.pal,c.x>W/2&&c.state!=='wait')}
+    else{const fr=Math.floor(cat.t*6)%2?'catB':'catA';spr(fr,cat.x-6,cat.y-8,null,cat.state==='in');
+      if(cat.carry)spr(cat.carry,cat.state==='in'?cat.x+4:cat.x-14,cat.y-9)}
+  }
+  if(gull){const fr=Math.floor(gull.t*6)%2?'gullA':'gullB';spr(fr,gull.x-6,gull.y-4,null,gull.state==='in');
+    if(gull.carry)spr(gull.carry,gull.x-3,gull.y+3)}
+
+  // 밤
+  if(n>0){
+    ctx.fillStyle=`rgba(20,24,60,${.38*n})`;
+    ctx.fillRect(0,0,W,48);ctx.fillRect(0,48,15,H-48);ctx.fillRect(115,48,W-115,H-48);ctx.fillRect(15,106,100,H-106);
+    ctx.fillStyle=`rgba(255,200,120,${.12*n})`;ctx.fillRect(15,48,100,60);
+    ctx.fillStyle=`rgba(255,220,140,${.25*n})`;ctx.fillRect(58,52,13,10);
+  }
+
+  // 말풍선
+  for(const c of customers){
+    const top=c.y-16;
+    if(c.state==='wait'){
+      const st=S.stock[c.want];
+      drawBubble(c.x,top-15,24,12);spr(c.want,c.x-11,top-14);
+      T('x'+c.qty,c.x+7,top-9,5,st>0?'#3b2a2a':'#e2574c');
+      const k=1-c.pat/c.maxPat;R(c.x-10,top-19,20,2,'rgba(59,42,42,.35)');R(c.x-10,top-19,Math.round(20*k),2,k>.5?'#5a9a5e':k>.25?'#f0b840':'#e2574c');
+    }else if(c.state==='out'&&c.moodT>0){
+      if(c.mood==='happy')spr('heart',c.x-3,top-9-(2.2-c.moodT)*3);
+      else{drawBubble(c.x,top-13,14,9);T('흥',c.x,top-8,5,'#3b2a2a')}
+    }
+  }
+  if(say){ctx.font='5px Galmuri11, sans-serif';const w=Math.ceil(ctx.measureText(say.text).width)+8;
+    const cx=Math.min(W-w/2-2,KEEPER.x);drawBubble(cx,KEEPER.y-14,w,10);T(say.text,cx,KEEPER.y-9,5,'#3b2a2a')}
+  if(cat&&cat.state==='flee'&&!cat.carry){drawBubble(cat.x,cat.y-20,14,9);T('냥?',cat.x,cat.y-15,5,'#3b2a2a')}
+  for(const p of parts){ctx.globalAlpha=Math.max(0,1-p.t/p.life);T(p.text,p.x,p.y,6,p.color,'center','#3b2a2a');ctx.globalAlpha=1}
+}
+function blendRGB(a,b,k){
+  const pa=a.startsWith('rgb')?a.match(/\d+/g).map(Number):hex(a),pb=b.startsWith('rgb')?b.match(/\d+/g).map(Number):hex(b);
+  return`rgb(${pa.map((v,i)=>Math.round(v+(pb[i]-v)*k)).join(',')})`;
+}
+
+/* ---------------- 터치 ---------------- */
+cv.addEventListener('pointerdown',e=>{
+  const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W,y=(e.clientY-r.top)/r.height*H;
+  if(gull&&gull.state==='in'&&Math.abs(x-gull.x)<12&&Math.abs(y-gull.y)<10){
+    gull.state='flee';const g=6+3*PRODUCTS.filter(p=>S.unlocked[p.id]).length;earn(g,gull.x,gull.y+8);S.shooed++;toast('훠이~ 갈매기를 쫓아냈어요');blip(1200,.05);return}
+  if(cat&&cat.state==='in'&&Math.abs(x-cat.x)<12&&Math.abs(y-(cat.y-4))<10){
+    cat.state='flee';const g=8+3*PRODUCTS.filter(p=>S.unlocked[p.id]).length;earn(g,cat.x,cat.y-12);S.shooed++;toast('쉿쉿, 고양이를 돌려보냈어요');blip(900,.06,'triangle');return}
+  for(const c of customers){if(c.state==='wait'&&Math.abs(x-c.x)<8&&y>c.y-36&&y<c.y+2){serve(c,true);return}}
+  for(let i=0;i<slotCount();i++){const p=slotPos(i);if(x>=p.x-3&&x<=p.x+13&&y>=p.line-2&&y<=p.line+18){tapSlot(i);return}}
+  if(Math.abs(x-KEEPER.x)<8&&y>KEEPER.y-2&&y<KEEPER.y+16){say={text:pick(KEEPER_LINES),t:2};blip(700,.05,'triangle');return}
+  PRODUCTS.forEach((p,i)=>{const [sx,sy]=SHELF[i];if(x>=sx-2&&x<=sx+12&&y>=sy-2&&y<=sy+18){
+    toast(S.unlocked[p.id]?`${p.name} 재고 ${S.stock[p.id]}개, 개당 ${fmt(priceEff(p))}원`:`${p.name}은 창고 탭에서 들여올 수 있어요`)}});
+});
+function tapSlot(i){
+  const sl=S.slots[i];
+  if(!sl.p){openPicker(i);return}
+  if(sl.done){collect(i,false);return}
+  const p=PM[sl.p],left=Math.ceil(timeEff(p)-sl.t);
+  openSheet(`<h3>${p.name} 말리는 중</h3><div class="sub">${left}초 남았어요. 다 마르면 눌러서 거둬주세요.</div>
+    <div class="bar"><i style="width:${Math.round(sl.t/timeEff(p)*100)}%"></i></div>
+    <button class="btn ghost big" data-act="clear" data-slot="${i}">이 칸 비우기 (재료비는 돌려받지 못해요)</button>
+    <button class="btn big" data-act="close">계속 말리기</button>`);
+}
+function openPicker(i){
+  const list=PRODUCTS.filter(p=>S.unlocked[p.id]).map(p=>`<div class="row"><img src="${ICONS[p.id]}"><div class="info"><b>${p.name}</b>
+    <small>재료비 ${fmt(p.cost)}원, ${Math.round(timeEff(p))}초 말리면 ${p.batch}개</small></div>
+    <button class="btn" data-act="hang" data-slot="${i}" data-id="${p.id}" ${S.coins<p.cost?'disabled':''}>걸기</button></div>`).join('');
+  openSheet(`<h3>무엇을 말려볼까요?</h3><div class="sub">다 마르면 창고로 들어가고, 손님이 사가요.</div>${list}`);
+}
+
+/* ---------------- UI ---------------- */
+const $=s=>document.querySelector(s);
+let tab='stock',lastSig='',toastTimer=null;
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('on'),2200)}
+let sheetOpenedAt=0;
+function openSheet(html){$('#sheetCard').innerHTML=html;$('#sheet').classList.remove('hidden');sheetOpenedAt=performance.now()}
+function closeSheet(){$('#sheet').classList.add('hidden');if(storyCur)finishStory()}
+
+/* 이야기 */
+let storyQ=[],storyCur=null,storyIdx=0;const _portrait={};
+function portraitURL(who){return _portrait[who]||(_portrait[who]=iconURL('person',5,CAST[who].pal))}
+function queueStory(id){if(!STORY[id]||S.story[id]||storyQ.includes(id)||(storyCur&&storyCur.id===id))return;storyQ.push(id)}
+function pumpStory(){
+  if(storyCur||!storyQ.length||!$('#sheet').classList.contains('hidden'))return;
+  storyCur={id:storyQ.shift(),replay:false};storyIdx=0;renderStory();
+}
+function playStory(id){storyCur={id,replay:true};storyIdx=0;renderStory()}
+function finishStory(){if(!storyCur.replay)S.story[storyCur.id]=1;storyCur=null;save();renderPanel(true)}
+function renderStory(){
+  const st=STORY[storyCur.id],[who,text]=st.lines[storyIdx],c=CAST[who],last=storyIdx===st.lines.length-1;
+  openSheet(`<div class="story"><div class="chap">${st.title}</div>
+    <div class="say ${c.pal?'':'plain'} ${who==='help'?'help':''}">
+      ${c.pal?`<img class="portrait" src="${portraitURL(who)}">`:''}
+      <div class="txt">${c.name?`<div class="who">${c.name}</div>`:''}<div class="line">${text}</div></div></div>
+    <div class="dots">${storyIdx+1} / ${st.lines.length}</div>
+    ${last&&storyCur.id==='ending'?`<button class="btn red big" data-act="visit">진짜 가게 구경하러 가기</button>`:''}
+    <button class="btn big" data-act="storynext">${last?'닫기':'다음'}</button></div>`);
+  blip(600+storyIdx*40,.04,'triangle',.025);
+}
+function checkMilestones(){
+  if(S.totalEarned>=3000)queueStory('rank1');
+  if(S.totalEarned>=20000)queueStory('rank2');
+  if(S.totalEarned>=80000)queueStory('rank3');
+  if(S.totalEarned>=300000)queueStory('ending');
+}
+$('#sheet .sheet-bg').addEventListener('click',()=>{if(performance.now()-sheetOpenedAt>450)closeSheet()});
+
+function sig(){
+  return tab+'|'+JSON.stringify(S.stock)+JSON.stringify(S.up)+JSON.stringify(S.unlocked)+'|'+
+    PRODUCTS.map(p=>S.coins>=p.unlock?1:0).join('')+UPS.map(u=>S.up[u.id]<u.max&&S.coins>=u.cost(S.up[u.id])?1:0).join('')+
+    (tab==='shop'?Math.floor(S.totalEarned/50)+'|'+S.served+'|'+Object.keys(S.story).length:'');
+}
+function renderPanel(force){
+  const s=sig();if(!force&&s===lastSig)return;lastSig=s;
+  const P=$('#panel');
+  if(tab==='stock'){
+    P.innerHTML=`<div class="hint">건조대의 빈칸을 눌러 건어물을 걸어보세요. 기다리는 손님을 톡 누르면 바로 팔고 10% 더 받아요. 갈매기랑 고양이는 눌러서 쫓아주세요!</div>`+
+    PRODUCTS.map(p=>S.unlocked[p.id]
+      ?`<div class="row"><img src="${ICONS[p.id]}"><div class="info"><b>${p.name}</b><small>재고 ${S.stock[p.id]}개 / 개당 ${fmt(priceEff(p))}원<br>${p.note}</small></div></div>`
+      :`<div class="row locked"><img src="${ICONS[p.id]}"><div class="info"><b>${p.name}</b><small>${p.note}</small></div>
+        <button class="btn green" data-act="unlock" data-id="${p.id}" ${S.coins<p.unlock?'disabled':''}>${fmt(p.unlock)}원에 들여오기</button></div>`).join('');
+  }else if(tab==='up'){
+    P.innerHTML=UPS.map(u=>{const l=S.up[u.id],maxed=l>=u.max;
+      return`<div class="row"><div class="info"><b>${u.name}</b><span class="lv">${u.max>1?`Lv ${l}/${u.max}`:(maxed?'완료':'')}</span><small>${u.desc()}</small></div>
+      ${maxed?'<button class="btn" disabled>완료</button>':`<button class="btn" data-act="up" data-id="${u.id}" ${S.coins<u.cost(l)?'disabled':''}>${fmt(u.cost(l))}원</button>`}</div>`}).join('');
+  }else{
+    P.innerHTML=`<div class="shopcard"><div class="sign">${CONFIG.shopName}</div>
+      ${CONFIG.realShopName?`<div class="meta">실제 가게: <b>${CONFIG.realShopName}</b></div>`:''}
+      <p>${CONFIG.shopIntro}</p>
+      ${CONFIG.shopAddress?`<div class="meta">${CONFIG.shopAddress}</div>`:''}
+      ${CONFIG.shopPhone?`<div class="meta">${CONFIG.shopPhone}</div>`:''}
+      <button class="btn red big" data-act="visit">진짜 가게 구경하러 가기</button>
+      ${CONFIG.supportAccount?`<button class="btn ghost big" data-act="support">사장님께 응원 보내기</button>`:''}
+      <div class="stats"><div>누적 매출<b>${fmt(S.totalEarned)}원</b></div><div>모신 손님<b>${fmt(S.served)}명</b></div><div>지킨 건어물<b>${fmt(S.shooed)}번</b></div></div>
+      <div class="replay"><div class="rt">지난 이야기 다시 보기</div>
+        ${STORY_ORDER.map(id=>S.story[id]?`<button class="chip" data-act="replay" data-id="${id}">${STORY[id].title}</button>`:`<span class="chip off">???</span>`).join('')}</div>
+      <button class="reset" data-act="reset">처음부터 다시 하기</button></div>`;
+  }
+}
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on');tab=b.dataset.tab;renderPanel(true)}));
+
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b||b.disabled)return;
+  if(b.closest('#sheet')&&performance.now()-sheetOpenedAt<300)return;
+  const a=b.dataset.act,id=b.dataset.id,slot=+b.dataset.slot;
+  if(a==='close')closeSheet();
+  else if(a==='storynext'){if(storyIdx<STORY[storyCur.id].lines.length-1){storyIdx++;renderStory()}else closeSheet();return}
+  else if(a==='replay'){playStory(id);return}
+  else if(a==='hang'){if(hang(slot,id))closeSheet()}
+  else if(a==='clear'){const sl=S.slots[slot];sl.p=null;sl.t=0;sl.done=false;closeSheet()}
+  else if(a==='unlock'){const p=PM[id];if(S.coins>=p.unlock){S.coins-=p.unlock;S.unlocked[id]=true;toast(`${p.name}를 들여왔어요!`);sfxCoin();queueStory(id);save()}}
+  else if(a==='up'){const u=UPS.find(x=>x.id===id),l=S.up[id],c=u.cost(l);if(l<u.max&&S.coins>=c){S.coins-=c;S.up[id]++;toast(`${u.name} 완료!`);sfxCoin();if(id==='staff')queueStory('staff');save()}}
+  else if(a==='visit'){if(CONFIG.shopUrl)window.open(CONFIG.shopUrl,'_blank');else toast('가게 링크는 곧 열려요!')}
+  else if(a==='support'){navigator.clipboard&&navigator.clipboard.writeText(CONFIG.supportAccount);toast('계좌번호를 복사했어요. 응원 감사합니다!')}
+  else if(a==='reset'){openSheet(`<h3>처음부터 다시 할까요?</h3><div class="sub">모은 돈과 가게 성장 기록이 모두 사라져요.</div>
+    <button class="btn red big" data-act="reset2">네, 다시 할래요</button><button class="btn ghost big" data-act="close">아니요</button>`)}
+  else if(a==='reset2'){S=fresh();customers=[];gull=null;cat=null;storyQ=[];save();closeSheet();queueStory('prologue');renderPanel(true)}
+  renderPanel(true);
+});
+$('#btnSound').addEventListener('click',()=>{S.sound=!S.sound;$('#btnSound').classList.toggle('off',!S.sound);if(S.sound)blip(880,.06)});
+$('#btnSound').classList.toggle('off',!S.sound);
+$('#hudName').textContent=CONFIG.shopName;
+
+/* ---------------- 자리 비운 동안 ---------------- */
+function applyOffline(){
+  const now=Date.now();let el=(now-(S.lastSave||now))/1000;
+  if(el<60)return;
+  el=Math.min(el,3*3600);
+  let made=0,spent=0,earned=0,sold=0;
+  for(let i=0;i<slotCount();i++){
+    const sl=S.slots[i];if(!sl.p)continue;const p=PM[sl.p],te=timeEff(p);
+    if(S.up.auto){const rem=el+sl.t;const cyc=Math.min(400,Math.floor(rem/te));S.stock[p.id]+=cyc*p.batch;made+=cyc*p.batch;spent+=cyc*p.cost;sl.t=rem-cyc*te;sl.done=false}
+    else{sl.t=Math.min(te,sl.t+el);if(sl.t>=te)sl.done=true}
+  }
+  if(S.up.staff){
+    let demand=Math.floor(el/spawnInt()*2*.6);
+    const ids=PRODUCTS.filter(p=>S.stock[p.id]>0).map(p=>p.id).sort((a,b)=>PM[b].price-PM[a].price);
+    while(demand>0&&ids.some(id=>S.stock[id]>0)){for(const id of ids){if(demand<=0)break;if(S.stock[id]>0){S.stock[id]--;demand--;sold++;earned+=priceEff(PM[id])}}}
+    S.served+=Math.round(sold/2);
+  }
+  S.coins=Math.max(0,S.coins+earned-spent);S.totalEarned+=earned;
+  S.clock+=el;
+  const h=Math.floor(el/3600),m=Math.floor(el%3600/60);
+  const done=[...Array(slotCount()).keys()].filter(i=>S.slots[i].done).length;
+  if(earned>0||made>0||done>0){
+    openSheet(`<h3>다녀오셨어요!</h3><div class="sub">${h?h+'시간 ':''}${m}분 동안 가게는 이렇게 지냈어요.</div>
+      ${sold?`<div class="row"><div class="info"><b>알바생이 판 건어물 ${fmt(sold)}개</b><small>매출 ${fmt(earned)}원</small></div></div>`:''}
+      ${made?`<div class="row"><div class="info"><b>새로 말린 건어물 ${fmt(made)}개</b><small>재료비 ${fmt(spent)}원</small></div></div>`:''}
+      ${done?`<div class="row"><div class="info"><b>다 마른 칸 ${done}개</b><small>건조대를 눌러 거둬주세요</small></div></div>`:''}
+      <button class="btn big" data-act="close">가게 문 열기</button>`);
+  }
+}
+
+/* ---------------- 시작 ---------------- */
+let last=performance.now(),coinShown=-1;
+function loop(now){
+  const dt=Math.min(.1,(now-last)/1000);last=now;
+  if(!storyCur)update(dt);
+  checkMilestones();pumpStory();draw();
+  if(Math.floor(S.coins)!==coinShown){coinShown=Math.floor(S.coins);$('#hudCoins').textContent=fmt(S.coins)}
+  $('#hudRank').textContent=rankName();
+  renderPanel(false);
+  requestAnimationFrame(loop);
+}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)save();else{last=performance.now();applyOffline()}});
+window.addEventListener('pagehide',save);
+
+applyOffline();
+queueStory('prologue');
+if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
+(document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{renderPanel(true);requestAnimationFrame(loop)});
+</script>
+</body>
+</html>
